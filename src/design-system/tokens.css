@@ -1,0 +1,210 @@
+/*
+ * Palatty Visual Identity v2 — Empfangscyan + Schriftbau + Zwei Firste
+ *
+ * Cyan is a signature accent (~2–4% viewport budget), not a section theme.
+ * Type: IBM Plex Sans (see docs/TYPEFACE-COMPARISON.md)
+ * Rollback: design-system/archive/tokens.alpine-modernism.css
+ */
+
+:root {
+  /* Brand materials */
+  --palatty-paper: #f7f5f1;
+  --palatty-snow: #ffffff;
+  --palatty-ink: #141414;
+  --palatty-slate: #4a4f55;
+  --palatty-wood: #3b2f28;
+  --palatty-navy: #0c1824;
+
+  /* Cyan signal — darkened from desk samples for WCAG AA with white text */
+  --palatty-cyan: #17808c;
+  --palatty-cyan-deep: #147a86;
+  --palatty-cyan-bright: #3c849c; /* rules / non-text only */
+
+  /* Location pips — subtle, not competing brands */
+  --accent-appenzell: #a67c52;
+  --accent-gais: #6b7c8a;
+
+  /* Neutrals / lines */
+  --palatty-line: color-mix(in oklab, var(--palatty-ink) 16%, transparent);
+  --palatty-line-strong: color-mix(in oklab, var(--palatty-ink) 32%, transparent);
+
+  /* Semantic */
+  --palatty-focus: var(--palatty-cyan);
+  --palatty-success: #2f6b4f;
+  --palatty-success-soft: #e1efe7;
+  --palatty-warning: #7a5420;
+  --palatty-warning-soft: #f5ecd9;
+  --palatty-danger: #9b3b2e;
+  --palatty-danger-soft: #f3e4e1;
+  --palatty-info: #3d6a7a;
+  --palatty-info-soft: #e2eef1;
+
+  /* Legacy aliases so older class names don't crash during transition */
+  --palatty-fir: var(--palatty-navy);
+  --palatty-fir-deep: var(--palatty-navy);
+  --palatty-fir-soft: color-mix(in oklab, var(--palatty-cyan) 12%, var(--palatty-paper));
+  --palatty-chalk: var(--palatty-paper);
+  --palatty-glacier: #d7e2e4;
+  --palatty-glacier-deep: var(--palatty-cyan);
+  --palatty-glacier-soft: #e8eef0;
+  --palatty-sage: var(--accent-gais);
+  --palatty-moss: var(--accent-appenzell);
+  --palatty-lichen: #c5cdc6;
+  --palatty-limestone: #e4e0d8;
+  --palatty-stone: #8a877c;
+
+  /* Surfaces */
+  --color-bg: var(--palatty-paper);
+  --color-bg-elevated: var(--palatty-snow);
+  --color-bg-inverse: var(--palatty-wood);
+  --color-fg: var(--palatty-ink);
+  --color-fg-muted: var(--palatty-slate);
+  --color-fg-subtle: color-mix(in oklab, var(--palatty-slate) 75%, white);
+  --color-fg-inverse: var(--palatty-snow);
+  --color-border: var(--palatty-line);
+  --color-border-strong: var(--palatty-line-strong);
+  --color-accent: var(--palatty-cyan);
+  --color-accent-hover: var(--palatty-cyan-deep);
+  --color-accent-soft: color-mix(in oklab, var(--palatty-cyan) 10%, var(--palatty-paper));
+  --color-accent-secondary: var(--palatty-navy);
+
+  --color-interactive: var(--palatty-cyan);
+  --color-interactive-hover: var(--palatty-cyan-deep);
+  --color-interactive-muted: color-mix(in oklab, var(--palatty-ink) 5%, transparent);
+  --color-disabled: color-mix(in oklab, var(--palatty-slate) 45%, transparent);
+
+  /* Typography — IBM Plex Sans */
+  --font-sans: var(--font-ibm-plex-sans), 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-ibm-plex-sans), 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.375rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.28;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.025em;
+  --tracking-display: -0.035em;
+  --tracking-wide: 0.1em;
+  --tracking-nav: 0.02em;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --measure-prose: 36rem;
+  --measure-lead: 40rem;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --container-sm: 40rem;
+  --container-md: 48rem;
+  --container-lg: 72rem;
+  --container-xl: 80rem;
+  --container-pad: clamp(1.25rem, 4vw, 2.5rem);
+
+  --section-y: clamp(4rem, 9vw, 7.5rem);
+  --section-y-tight: clamp(2.5rem, 5vw, 4rem);
+
+  --grid-gap: clamp(1rem, 2.5vw, 1.75rem);
+  --grid-gap-lg: clamp(1.5rem, 3vw, 2.5rem);
+
+  /* Near-zero radius (Schriftbau) */
+  --radius-sm: 0;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.125rem;
+  --radius-pill: 0.125rem;
+
+  --shadow-soft: none;
+  --shadow-lift: 0 1px 0 var(--palatty-line);
+
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-overlay: 60;
+  --z-modal: 80;
+  --z-toast: 100;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 160ms;
+  --duration-base: 280ms;
+  --duration-slow: 480ms;
+  --duration-reveal: 600ms;
+
+  --focus-ring: 0 0 0 2px var(--palatty-snow), 0 0 0 4px var(--palatty-cyan);
+}
+
+@theme inline {
+  --color-chalk: var(--palatty-paper);
+  --color-snow: var(--palatty-snow);
+  --color-limestone: var(--palatty-limestone);
+  --color-stone: var(--palatty-stone);
+  --color-slate: var(--palatty-slate);
+  --color-ink: var(--palatty-ink);
+  --color-fir: var(--palatty-navy);
+  --color-fir-deep: var(--palatty-navy);
+  --color-moss: var(--palatty-moss);
+  --color-lichen: var(--palatty-lichen);
+  --color-sage: var(--palatty-sage);
+  --color-glacier: var(--palatty-glacier);
+  --color-glacier-soft: var(--palatty-glacier-soft);
+  --color-cyan: var(--palatty-cyan);
+  --color-navy: var(--palatty-navy);
+  --color-wood: var(--palatty-wood);
+  --color-danger: var(--palatty-danger);
+  --color-success: var(--palatty-success);
+  --color-warning: var(--palatty-warning);
+  --color-info: var(--palatty-info);
+
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-fg);
+  --color-muted: var(--color-fg-muted);
+  --color-subtle: var(--color-fg-subtle);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --spacing-section: var(--section-y);
+  --spacing-section-tight: var(--section-y-tight);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+
+  --ease-out: var(--ease-out);
+  --default-transition-duration: var(--duration-base);
+  --default-transition-timing-function: var(--ease-out);
+}

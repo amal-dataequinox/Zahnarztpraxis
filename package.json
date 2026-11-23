@@ -1,0 +1,62 @@
+{
+  "name": "zahnarztpraxis-palatty",
+  "version": "1.0.0",
+  "description": "Zahnarztpraxis Palatty - unified CMS and multi-domain website for the Appenzell and Gais practices",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,scss}\" \"docs/**/*.md\" \"*.{md,json,mjs,ts}\"",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/index.ts",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "test:unit": "node --experimental-strip-types --test src/utilities/resolveDomain.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.94.0",
+    "@payloadcms/next": "3.94.0",
+    "@payloadcms/plugin-redirects": "3.94.0",
+    "@payloadcms/plugin-seo": "3.94.0",
+    "@payloadcms/richtext-lexical": "3.94.0",
+    "@payloadcms/translations": "3.94.0",
+    "@payloadcms/ui": "3.94.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "16.4.7",
+    "graphql": "^16.8.1",
+    "gsap": "^3.15.1",
+    "next": "16.4.6",
+    "payload": "3.94.0",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "sharp": "0.35.4",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "22.19.9",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/three": "^0.187.0",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "16.4.6",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^4.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

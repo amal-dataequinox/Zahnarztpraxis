@@ -1,0 +1,209 @@
+/*
+ * Palatty Alpine Modernism — design tokens
+ *
+ * Brand anchors (locked with 3D art direction):
+ *   Fir #263B32 · Glacier #C4D7D8 · Chalk #F3F0E7 · Sage #A7B2A0
+ * Typography: Newsreader (display) + Manrope (UI / body)
+ */
+
+:root {
+  /* ------------------------------------------------------------------ */
+  /* Colour — brand                                                     */
+  /* ------------------------------------------------------------------ */
+  --palatty-fir: #263b32;
+  --palatty-fir-deep: #1a2922;
+  --palatty-fir-soft: color-mix(in oklab, var(--palatty-fir) 12%, var(--palatty-chalk));
+
+  --palatty-glacier: #c4d7d8;
+  --palatty-glacier-deep: #6a8f90;
+  --palatty-glacier-soft: color-mix(in oklab, var(--palatty-glacier) 72%, white);
+
+  --palatty-chalk: #f3f0e7;
+  --palatty-snow: #faf9f5;
+  --palatty-sage: #a7b2a0;
+  --palatty-sage-deep: #7d8a74;
+
+  --palatty-limestone: #ddd8cc;
+  --palatty-stone: #8a877c;
+  --palatty-slate: #3f453f;
+  --palatty-ink: #141816;
+
+  /* Legacy aliases (Phase 2/3 components) */
+  --palatty-moss: var(--palatty-sage-deep);
+  --palatty-lichen: var(--palatty-sage);
+
+  /* Semantic */
+  --palatty-focus: #2f6b5c;
+  --palatty-success: #2f6b4f;
+  --palatty-success-soft: #e1efe7;
+  /* Tuned for ≥4.5:1 on warning-soft (semantic; not a brand-anchor change) */
+  --palatty-warning: #7a5420;
+  --palatty-warning-soft: #f5ecd9;
+  --palatty-danger: #9b3b2e;
+  --palatty-danger-soft: #f3e4e1;
+  --palatty-info: #3d6a7a;
+  --palatty-info-soft: #e2eef1;
+
+  /* Surfaces & text */
+  --color-bg: var(--palatty-chalk);
+  --color-bg-elevated: var(--palatty-snow);
+  --color-bg-inverse: var(--palatty-fir-deep);
+  --color-bg-band: var(--palatty-glacier);
+  --color-fg: var(--palatty-ink);
+  --color-fg-muted: var(--palatty-slate);
+  --color-fg-subtle: var(--palatty-stone);
+  --color-fg-inverse: var(--palatty-snow);
+  --color-border: color-mix(in oklab, var(--palatty-slate) 16%, transparent);
+  --color-border-strong: color-mix(in oklab, var(--palatty-slate) 32%, transparent);
+  --color-accent: var(--palatty-fir);
+  --color-accent-hover: var(--palatty-fir-deep);
+  --color-accent-soft: var(--palatty-fir-soft);
+  --color-accent-secondary: var(--palatty-glacier-deep);
+
+  /* Interactive */
+  --color-interactive: var(--palatty-fir);
+  --color-interactive-hover: var(--palatty-fir-deep);
+  --color-interactive-muted: color-mix(in oklab, var(--palatty-ink) 5%, transparent);
+  --color-disabled: color-mix(in oklab, var(--palatty-slate) 45%, transparent);
+
+  /* ------------------------------------------------------------------ */
+  /* Typography                                                         */
+  /* ------------------------------------------------------------------ */
+  --font-sans: var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem; /* 12 — captions, badges */
+  --text-sm: 0.875rem; /* 14 — labels, nav, hints */
+  --text-base: 1.0625rem; /* 17 — body */
+  --text-lg: 1.25rem; /* 20 — body large / lead support */
+  --text-xl: 1.5rem; /* 24 — H5 */
+  --text-2xl: 1.875rem; /* 30 — H4 / H3 fluid floor */
+  --text-3xl: 2.375rem; /* 38 */
+  --text-4xl: 3rem; /* 48 — H2 */
+  --text-5xl: 3.75rem; /* 60 */
+  --text-6xl: 4.75rem; /* 76 — display / H1 */
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.02em;
+  --tracking-display: -0.03em;
+  --tracking-wide: 0.08em;
+  --tracking-nav: 0.02em;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* German editorial measure */
+  --measure-prose: 38rem;
+  --measure-lead: 42rem;
+
+  /* ------------------------------------------------------------------ */
+  /* Spacing (4px base)                                                 */
+  /* ------------------------------------------------------------------ */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --container-sm: 40rem;
+  --container-md: 48rem;
+  --container-lg: 72rem;
+  --container-xl: 84rem;
+  --container-pad: clamp(1.25rem, 4vw, 2.5rem);
+
+  --section-y: clamp(4rem, 10vw, 8rem);
+  --section-y-tight: clamp(2.5rem, 6vw, 4.5rem);
+
+  --grid-gap: clamp(1rem, 2.5vw, 1.75rem);
+  --grid-gap-lg: clamp(1.5rem, 3vw, 2.5rem);
+
+  /* ------------------------------------------------------------------ */
+  /* Radius, elevation, z-index, motion                                 */
+  /* ------------------------------------------------------------------ */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 1px 2px color-mix(in oklab, var(--palatty-ink) 5%, transparent),
+    0 8px 24px color-mix(in oklab, var(--palatty-ink) 4%, transparent);
+  --shadow-lift: 0 2px 4px color-mix(in oklab, var(--palatty-ink) 5%, transparent),
+    0 16px 40px color-mix(in oklab, var(--palatty-ink) 7%, transparent);
+
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-overlay: 60;
+  --z-modal: 80;
+  --z-toast: 100;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 160ms;
+  --duration-base: 280ms;
+  --duration-slow: 480ms;
+  --duration-reveal: 700ms;
+
+  --focus-ring: 0 0 0 2px var(--palatty-snow), 0 0 0 4px var(--palatty-focus);
+}
+
+@theme inline {
+  --color-chalk: var(--palatty-chalk);
+  --color-snow: var(--palatty-snow);
+  --color-limestone: var(--palatty-limestone);
+  --color-stone: var(--palatty-stone);
+  --color-slate: var(--palatty-slate);
+  --color-ink: var(--palatty-ink);
+  --color-fir: var(--palatty-fir);
+  --color-fir-deep: var(--palatty-fir-deep);
+  --color-moss: var(--palatty-moss);
+  --color-lichen: var(--palatty-lichen);
+  --color-sage: var(--palatty-sage);
+  --color-glacier: var(--palatty-glacier);
+  --color-glacier-soft: var(--palatty-glacier-soft);
+  --color-danger: var(--palatty-danger);
+  --color-success: var(--palatty-success);
+  --color-warning: var(--palatty-warning);
+  --color-info: var(--palatty-info);
+
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-fg);
+  --color-muted: var(--color-fg-muted);
+  --color-subtle: var(--color-fg-subtle);
+  --color-accent: var(--color-accent);
+  --color-border: var(--color-border);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --spacing-section: var(--section-y);
+  --spacing-section-tight: var(--section-y-tight);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+
+  --ease-out: var(--ease-out);
+  --default-transition-duration: var(--duration-base);
+  --default-transition-timing-function: var(--ease-out);
+}

@@ -1,0 +1,206 @@
+/* Appenzell homepage motion — Hybrid GSAP + CSS ambient; scoped off Gais / DS */
+
+.appenzell-home {
+  --ax-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ax-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ax-hover: 250ms;
+  --ax-ambient: 22s;
+}
+
+/* GSAP sets initial opacity via gsap.set — avoid CSS opacity:0 so content
+   remains visible if JS is delayed or context reverts (Strict Mode). */
+.appenzell-hero-entrance [data-ax-enter],
+.appenzell-hero-media,
+.appenzell-reveal {
+  will-change: opacity, transform;
+}
+
+.appenzell-reveal--mask {
+  will-change: opacity, clip-path;
+}
+
+/* —— Interaction —— */
+.appenzell-home .appenzell-link-arrow {
+  display: inline-block;
+  transition: transform var(--ax-hover) var(--ax-ease-inout);
+}
+
+.appenzell-home a:hover .appenzell-link-arrow,
+.appenzell-home a:focus-visible .appenzell-link-arrow {
+  transform: translateX(0.2rem);
+}
+
+.appenzell-home .appenzell-service-row {
+  transition: background-color var(--ax-hover) var(--ax-ease-inout);
+}
+
+.appenzell-home .appenzell-service-row:hover {
+  background-color: color-mix(in oklab, var(--palatty-ink) 2.5%, transparent);
+}
+
+/* —— Alpine photo ambient (Hybrid depth) —— */
+.appenzell-alpine {
+  --ax-parallax-x: 0px;
+  --ax-parallax-y: 0px;
+}
+
+.appenzell-alpine__stage {
+  position: absolute;
+  inset: -4%;
+  transform: translate3d(var(--ax-parallax-x), var(--ax-parallax-y), 0);
+  transition: transform 400ms var(--ax-ease-out);
+  will-change: transform;
+}
+
+.appenzell-alpine__bg,
+.appenzell-alpine__mid,
+.appenzell-alpine__fg,
+.appenzell-alpine__mist,
+.appenzell-alpine__clouds {
+  position: absolute;
+  inset: 0;
+}
+
+.appenzell-alpine__bg {
+  transform: scale(1.08);
+  animation: ax-drift-bg var(--ax-ambient) linear infinite alternate;
+}
+
+.appenzell-alpine__mid {
+  transform: scale(1.04);
+  animation: ax-drift-mid calc(var(--ax-ambient) * 0.85) linear infinite alternate;
+}
+
+.appenzell-alpine__mist {
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    color-mix(in oklab, var(--palatty-paper) 18%, transparent) 0%,
+    transparent 42%,
+    color-mix(in oklab, #dce6f0 22%, transparent) 78%,
+    transparent 100%
+  );
+  opacity: 0.45;
+  animation: ax-mist-drift 26s linear infinite alternate;
+  mix-blend-mode: soft-light;
+}
+
+.appenzell-alpine__fg {
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 55%,
+      color-mix(in oklab, var(--palatty-paper) 12%, transparent) 100%
+    ),
+    radial-gradient(
+      120% 60% at 70% 100%,
+      color-mix(in oklab, #3a5a3a 18%, transparent) 0%,
+      transparent 55%
+    );
+  animation: ax-drift-fg calc(var(--ax-ambient) * 0.7) linear infinite alternate;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+
+.appenzell-alpine__clouds {
+  pointer-events: none;
+  inset: -10% -20%;
+  background:
+    radial-gradient(ellipse 40% 18% at 20% 28%, rgb(255 255 255 / 0.35), transparent 70%),
+    radial-gradient(ellipse 50% 22% at 68% 18%, rgb(255 255 255 / 0.28), transparent 72%),
+    radial-gradient(ellipse 35% 16% at 88% 42%, rgb(255 255 255 / 0.2), transparent 70%);
+  animation: ax-cloud-drift 28s linear infinite alternate;
+  opacity: 0.65;
+}
+
+.appenzell-alpine.is-paused .appenzell-alpine__bg,
+.appenzell-alpine.is-paused .appenzell-alpine__mid,
+.appenzell-alpine.is-paused .appenzell-alpine__fg,
+.appenzell-alpine.is-paused .appenzell-alpine__mist,
+.appenzell-alpine.is-paused .appenzell-alpine__clouds {
+  animation-play-state: paused;
+}
+
+@keyframes ax-drift-bg {
+  from {
+    transform: scale(1.08) translate3d(-0.6%, 0.3%, 0);
+  }
+  to {
+    transform: scale(1.08) translate3d(0.7%, -0.4%, 0);
+  }
+}
+
+@keyframes ax-drift-mid {
+  from {
+    transform: scale(1.04) translate3d(0.4%, -0.2%, 0);
+  }
+  to {
+    transform: scale(1.04) translate3d(-0.5%, 0.35%, 0);
+  }
+}
+
+@keyframes ax-drift-fg {
+  from {
+    opacity: 0.45;
+    transform: translate3d(-0.8%, 0.4%, 0);
+  }
+  to {
+    opacity: 0.6;
+    transform: translate3d(0.9%, -0.3%, 0);
+  }
+}
+
+@keyframes ax-cloud-drift {
+  from {
+    transform: translate3d(-2%, 0.5%, 0);
+  }
+  to {
+    transform: translate3d(3%, -0.8%, 0);
+  }
+}
+
+@keyframes ax-mist-drift {
+  from {
+    opacity: 0.35;
+    transform: translate3d(-1.5%, 0, 0);
+  }
+  to {
+    opacity: 0.55;
+    transform: translate3d(2%, -0.5%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appenzell-hero-entrance > [data-ax-enter],
+  .appenzell-hero-media,
+  .appenzell-reveal,
+  .appenzell-reveal--stagger > .appenzell-reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .appenzell-alpine__bg,
+  .appenzell-alpine__mid,
+  .appenzell-alpine__fg,
+  .appenzell-alpine__mist,
+  .appenzell-alpine__clouds {
+    animation: none !important;
+  }
+
+  .appenzell-alpine__stage {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .appenzell-home .appenzell-link-arrow {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .appenzell-alpine__stage {
+    transition: none;
+  }
+}

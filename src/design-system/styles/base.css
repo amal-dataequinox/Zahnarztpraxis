@@ -1,0 +1,168 @@
+@layer base {
+  html {
+    color-scheme: light;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 100%;
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-weight: var(--weight-regular);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--palatty-fir) 22%, transparent);
+    color: var(--palatty-ink);
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  a {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-display);
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .surface-chalk {
+    background-color: var(--palatty-paper);
+    color: var(--palatty-ink);
+  }
+
+  .surface-snow {
+    background-color: var(--palatty-snow);
+    color: var(--palatty-ink);
+  }
+
+  .surface-fir {
+    background-color: var(--palatty-wood);
+    color: var(--palatty-snow);
+  }
+
+  .surface-glacier {
+    background-color: var(--palatty-snow);
+    color: var(--palatty-ink);
+  }
+
+  .surface-sage {
+    background-color: var(--palatty-paper);
+    color: var(--palatty-ink);
+  }
+
+  .surface-navy {
+    background-color: var(--palatty-navy);
+    color: var(--palatty-snow);
+  }
+
+  .hairline {
+    border-color: var(--color-border);
+  }
+
+  .alpine-grain {
+    /* Deprecated wellness wash — kept as flat paper for legacy class references */
+    background: var(--palatty-paper);
+  }
+
+  .motion-fade-up {
+    animation: palatty-fade-up var(--duration-reveal) var(--ease-out) both;
+  }
+
+  .motion-fade-in {
+    animation: palatty-fade-in var(--duration-slow) var(--ease-out) both;
+  }
+
+  .motion-reveal-delay-1 {
+    animation-delay: 80ms;
+  }
+
+  .motion-reveal-delay-2 {
+    animation-delay: 160ms;
+  }
+
+  .motion-reveal-delay-3 {
+    animation-delay: 240ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-fade-up,
+    .motion-fade-in,
+    .motion-reveal-delay-1,
+    .motion-reveal-delay-2,
+    .motion-reveal-delay-3 {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes palatty-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes palatty-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
