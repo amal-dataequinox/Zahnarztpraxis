@@ -5,6 +5,7 @@ import React from 'react'
 import { BookingPlaceholder } from '@/components/site/BookingPlaceholder'
 import { OpeningHoursList } from '@/components/site/OpeningHoursList'
 import {
+  ButtonLink,
   Container,
   EditorialSplit,
   Eyebrow,
@@ -51,18 +52,41 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
             mirror
             density="hero"
             copy={
-              <Stack gap="5" className="max-w-xl motion-fade-up">
-                <p className="m-0 flex items-center gap-2 font-sans text-[length:var(--text-xs)] font-medium uppercase tracking-[var(--tracking-wide)] text-[var(--palatty-slate)]">
-                  <span className="h-2 w-2 shrink-0 bg-[var(--accent-gais)]" aria-hidden />
-                  Gais
+              <Stack gap="6" className="max-w-xl motion-fade-up">
+                <p className="m-0 flex items-center gap-2.5 font-sans text-[length:var(--text-xs)] font-bold uppercase tracking-[0.16em] text-[#132624]">
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#008768]" aria-hidden />
+                  Zahnarztpraxis Palatty · Gais
                 </p>
-                <Heading level={1}>Zahnarztpraxis Palatty</Heading>
-                <Lead>
-                  {location.shortDescription ||
-                    'Professionelle zahnärztliche Fachkompetenz und Ihr Wohlbefinden sind für uns untrennbar.'}
-                </Lead>
-                <BookingPlaceholder compact />
-                <LocationSwitcher current="gais" options={locationOptions} />
+                <h1 className="font-sans text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em] text-[#112926] text-balance drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
+                  Zahnmedizin,<br />
+                  die sich <span className="text-[#008768]">gut</span><br />
+                  <span className="text-[#008768]">anfühlt.</span>
+                </h1>
+                <p className="font-sans text-[length:var(--text-base)] sm:text-lg font-medium leading-relaxed text-[#142824] text-pretty">
+                  Moderne Behandlung. Persönliche Betreuung.<br />
+                  Für Sie und Ihre Familie.
+                </p>
+                <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:gap-6">
+                  <ButtonLink
+                    href="/kontakt#termin"
+                    size="lg"
+                    className="rounded-xl bg-[#008768] text-white hover:bg-[#007358] px-7 py-4 font-sans font-semibold text-base shadow-[0_4px_16px_rgba(0,135,104,0.25)] hover:shadow-[0_6px_22px_rgba(0,135,104,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    Termin vereinbaren
+                    <span aria-hidden className="text-[1.15em] leading-none ml-1">
+                      ↗
+                    </span>
+                  </ButtonLink>
+                  <Link
+                    href="/leistungen"
+                    className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#008768] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
+                  >
+                    Behandlungen entdecken
+                    <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                </div>
               </Stack>
             }
             media={

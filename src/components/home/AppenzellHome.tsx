@@ -79,37 +79,51 @@ export async function AppenzellHome({ location, locationOptions }: AppenzellHome
           />
         </div>
         <Container className="relative z-[2] flex min-h-dvh items-end justify-center pb-14 pt-28 sm:items-center sm:justify-start sm:pb-20 sm:pl-[min(10vw,5.5rem)] sm:pt-32 lg:pl-[min(14vw,8rem)]">
-          <HeroEntrance className="w-full max-w-lg">
-            <Stack gap="5">
+          <HeroEntrance className="w-full max-w-2xl">
+            <Stack gap="6">
               <p
                 data-ax-enter="label"
-                className="m-0 flex items-center gap-2 font-sans text-[length:var(--text-xs)] font-medium uppercase tracking-[var(--tracking-wide)] text-[var(--palatty-slate)]"
+                className="m-0 flex items-center gap-2.5 font-sans text-[length:var(--text-xs)] font-bold uppercase tracking-[0.16em] text-[#132624]"
               >
-                <span className="h-2 w-2 shrink-0 bg-[var(--accent-appenzell)]" aria-hidden />
-                Appenzell
+                <span className="h-2 w-2 shrink-0 rounded-full bg-[#008768]" aria-hidden />
+                Zahnarztpraxis Palatty · Appenzell
               </p>
               <div data-ax-enter="heading">
-                <Heading level={1} className="[text-shadow:0_1px_12px_color-mix(in_oklab,var(--palatty-paper)_70%,transparent)]">
-                  Zahnarztpraxis Palatty
-                </Heading>
+                <h1 className="font-sans text-[clamp(2.75rem,7.5vw,5.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em] text-[#112926] text-balance drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
+                  Zahnmedizin,<br />
+                  die sich <span className="text-[#008768]">gut</span><br />
+                  <span className="text-[#008768]">anfühlt.</span>
+                </h1>
               </div>
               <div data-ax-enter="lead">
-                <Lead className="font-medium text-[var(--palatty-ink)] [text-shadow:0_1px_10px_color-mix(in_oklab,var(--palatty-paper)_75%,transparent)]">
-                  {location.shortDescription ||
-                    'Professionelle zahnärztliche Fachkompetenz und Ihr Wohlbefinden sind für uns untrennbar. Wir freuen uns auf Ihren Besuch.'}
-                </Lead>
+                <p className="font-sans text-[length:var(--text-base)] sm:text-lg font-medium leading-relaxed text-[#142824] text-pretty">
+                  Moderne Behandlung. Persönliche Betreuung.<br />
+                  Für Sie und Ihre Familie.
+                </p>
               </div>
               <div
                 data-ax-enter="cta"
-                className="flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center"
+                className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:gap-6"
               >
-                <BookingPlaceholder compact />
-                <ButtonLink href="/leistungen" variant="secondary" size="md" className="shrink-0">
-                  Unsere Leistungen
+                <ButtonLink
+                  href="/kontakt#termin"
+                  size="lg"
+                  className="rounded-xl bg-[#008768] text-white hover:bg-[#007358] px-7 py-4 font-sans font-semibold text-base shadow-[0_4px_16px_rgba(0,135,104,0.25)] hover:shadow-[0_6px_22px_rgba(0,135,104,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  Termin vereinbaren
+                  <span aria-hidden className="text-[1.15em] leading-none ml-1">
+                    ↗
+                  </span>
                 </ButtonLink>
-              </div>
-              <div data-ax-enter="switcher">
-                <LocationSwitcher current="appenzell" options={locationOptions} />
+                <Link
+                  href="/leistungen"
+                  className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#008768] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
+                >
+                  Behandlungen entdecken
+                  <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
               </div>
             </Stack>
           </HeroEntrance>

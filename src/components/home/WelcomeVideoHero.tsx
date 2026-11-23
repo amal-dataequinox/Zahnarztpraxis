@@ -101,21 +101,10 @@ export function WelcomeVideoHero({
       )}
 
       {fullBleed ? (
-        <>
-          {/* Soft mid-left readability where hero copy sits */}
-          <div
-            className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(100deg,color-mix(in_oklab,var(--palatty-paper)_55%,transparent)_0%,color-mix(in_oklab,var(--palatty-paper)_38%,transparent)_34%,color-mix(in_oklab,var(--palatty-paper)_12%,transparent)_58%,transparent_78%)]"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-[linear-gradient(180deg,transparent,color-mix(in_oklab,var(--palatty-paper)_55%,transparent))]"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-28 bg-[linear-gradient(180deg,color-mix(in_oklab,var(--palatty-paper)_35%,transparent),transparent)]"
-            aria-hidden
-          />
-        </>
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,color-mix(in_oklab,var(--palatty-paper)_42%,transparent)_0%,color-mix(in_oklab,var(--palatty-paper)_26%,transparent)_20%,color-mix(in_oklab,var(--palatty-paper)_10%,transparent)_36%,transparent_50%)]"
+          aria-hidden
+        />
       ) : (
         <>
           <div
