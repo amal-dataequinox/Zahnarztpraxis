@@ -206,7 +206,9 @@ export default buildConfig({
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
         },
         region: s3Region,
-        ...(process.env.S3_ENDPOINT ? { endpoint: process.env.S3_ENDPOINT } : {}),
+        ...(process.env.S3_ENDPOINT
+          ? { endpoint: process.env.S3_ENDPOINT, forcePathStyle: true }
+          : {}),
       },
     }),
   ],

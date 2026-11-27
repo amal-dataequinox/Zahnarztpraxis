@@ -41,7 +41,9 @@ export const getPresignedUrlHandler: PayloadHandler = async (req) => {
         accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
       },
-      ...(process.env.S3_ENDPOINT ? { endpoint: process.env.S3_ENDPOINT } : {}),
+      ...(process.env.S3_ENDPOINT
+        ? { endpoint: process.env.S3_ENDPOINT, forcePathStyle: true }
+        : {}),
     })
 
     const command = new PutObjectCommand({
