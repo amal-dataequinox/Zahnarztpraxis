@@ -30,7 +30,13 @@ export const getPresignedUrlHandler: PayloadHandler = async (req) => {
     const rawKey = typeof body?.key === 'string' ? body.key.trim().replace(/^\/+/, '') : ''
     const contentType = typeof body?.contentType === 'string' ? body.contentType.trim() : ''
 
-    if (!rawKey || !contentType || rawKey.includes('..') || rawKey.includes('\\')) {
+    if (
+      !rawKey ||
+      !contentType ||
+      rawKey.includes('..') ||
+      rawKey.includes('\\') ||
+      !rawKey.startsWith('palatty-media/')
+    ) {
       return Response.json({ error: 'Ungültiger Schlüssel oder Content-Type.' }, { status: 400 })
     }
 

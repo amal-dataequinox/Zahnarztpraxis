@@ -71,7 +71,7 @@ async function main() {
 
   for (const filePath of mediaFiles) {
     const rel = path.relative(MEDIA_DIR, filePath).split(path.sep).join('/')
-    const key = `media/${rel}`
+    const key = `palatty-media/${rel}`
     const ext = path.extname(filePath).toLowerCase()
     const contentType = MIME_BY_EXT[ext] || 'application/octet-stream'
     const body = await fs.readFile(filePath)
@@ -90,7 +90,7 @@ async function main() {
 
   for (const filePath of hlsFiles) {
     const rel = path.relative(HLS_DIR, filePath).split(path.sep).join('/')
-    const key = `media/hls/${rel}`
+    const key = `palatty-media/hls/${rel}`
     const ext = path.extname(filePath).toLowerCase()
     const contentType = MIME_BY_EXT[ext] || 'application/octet-stream'
     const body = await fs.readFile(filePath)
@@ -109,7 +109,7 @@ async function main() {
 
   const baseUrl =
     process.env.CDN_URL?.replace(/\/+$/, '') || `https://${bucket}.s3.${region}.amazonaws.com`
-  console.log(`SYNC_MEDIA_TO_S3_COMPLETE uploaded=${uploaded} baseUrl=${baseUrl}/media`)
+  console.log(`SYNC_MEDIA_TO_S3_COMPLETE uploaded=${uploaded} baseUrl=${baseUrl}/palatty-media`)
 }
 
 main().catch((err) => {

@@ -192,7 +192,7 @@ export default buildConfig({
       clientUploads: true,
       collections: {
         media: {
-          prefix: 'media',
+          prefix: 'palatty-media',
           generateFileURL: ({ filename: file, prefix }) => {
             if (!s3CdnBaseUrl) return `/api/media/file/${file}`
             return `${s3CdnBaseUrl}/${prefix ? `${prefix}/` : ''}${file}`

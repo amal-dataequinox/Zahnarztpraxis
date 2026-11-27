@@ -3,6 +3,7 @@ import * as migration_20261120_065014_location_hero_video from './20261120_06501
 import * as migration_20261120_070940_location_logo from './20261120_070940_location_logo';
 import * as migration_20261127_060136___name from './20261127_060136___name';
 import * as migration_20261127_063000_s3_media_prefix from './20261127_063000_s3_media_prefix';
+import * as migration_20261127_070000_palatty_s3_prefix from './20261127_070000_palatty_s3_prefix';
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20261127_063000_s3_media_prefix.up,
     down: migration_20261127_063000_s3_media_prefix.down,
     name: '20261127_063000_s3_media_prefix',
+  },
+  {
+    up: migration_20261127_070000_palatty_s3_prefix.up,
+    down: migration_20261127_070000_palatty_s3_prefix.down,
+    name: '20261127_070000_palatty_s3_prefix',
   },
 ];

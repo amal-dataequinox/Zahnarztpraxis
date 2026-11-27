@@ -64,7 +64,7 @@ export const HlsUploader: React.FC = () => {
         const fileData = await entry.async('blob')
         const cleanEntryName = entry.name.replace(/^\/+/, '')
         const relKey = `${folderName}/${cleanEntryName}`
-        const s3Key = `media/hls/${relKey}`
+        const s3Key = `palatty-media/hls/${relKey}`
         const contentType = contentTypeForName(cleanEntryName)
         let uploadedUrl = ''
 
