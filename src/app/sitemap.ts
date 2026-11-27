@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
   }))
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: now },
     ...fixed,
     ...pages.docs
@@ -69,4 +69,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(service.updatedAt),
     })),
   ]
+
+  const byUrl = new Map<string, MetadataRoute.Sitemap[number]>()
+  for (const entry of entries) {
+    byUrl.set(entry.url, entry)
+  }
+  return Array.from(byUrl.values())
 }

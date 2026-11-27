@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { activeOrEditor, editorOrAbove, superAdminOnly } from '@/access'
 import { weeklyScheduleField } from '@/fields/openingHours'
 import { slugField } from '@/fields/slug'
+import { cmsCollectionRevalidateHooks } from '@/utilities/cacheRevalidation'
 
 const HOSTNAME_PATTERN = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/
 
@@ -13,7 +14,7 @@ const HOSTNAME_PATTERN = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a
  */
 export const Locations: CollectionConfig = {
   slug: 'locations',
-  labels: { singular: 'Standort', plural: 'Standorte' },
+  labels: { singular: 'Praxis & Standort', plural: 'Praxis & Standort' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'domain', 'active'],
@@ -26,6 +27,7 @@ export const Locations: CollectionConfig = {
     // Deleting a location is destructive for the whole domain — super admin only.
     delete: superAdminOnly,
   },
+  hooks: cmsCollectionRevalidateHooks(['cms-locations', 'cms-pages']),
   fields: [
     {
       name: 'name',
@@ -73,6 +75,19 @@ export const Locations: CollectionConfig = {
           label: 'Allgemein',
           fields: [
             {
+              name: 'primaryColor',
+              label: 'Primärfarbe der Praxis (Hex-Code)',
+              type: 'text',
+              admin: {
+                description:
+                  'Individuelle Primärfarbe für diese Praxis (z. B. #00a887, #3a81c4 oder jede Wunschfarbe). Überschreibt die globale Primärfarbe aus dem Design-System.',
+              },
+              validate: (value: unknown) =>
+                !value ||
+                (typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value)) ||
+                'Bitte einen 6-stelligen Hex-Code angeben (z. B. #00a887)',
+            },
+            {
               name: 'shortDescription',
               label: 'Kurzbeschreibung',
               type: 'textarea',
@@ -88,7 +103,7 @@ export const Locations: CollectionConfig = {
               },
               admin: {
                 description:
-                  'Horizontales Logo für Header (z. B. Palatty Appenzell / Gais). Leer = Standarddatei aus dem Design-System.',
+                  'Horizontales Logo für Header. Leer = Standardlogo aus dem Design-System oder Website-Einstellungen.',
               },
             },
             {
@@ -190,6 +205,14 @@ export const Locations: CollectionConfig = {
             { name: 'phone', label: 'Telefonnummer', type: 'text' },
             { name: 'email', label: 'E-Mail', type: 'email' },
             {
+              name: 'hinEmail',
+              label: 'HIN-E-Mail (Zuweiser / Datenschutz)',
+              type: 'email',
+              admin: {
+                description: 'Sichere HIN-Adresse, z. B. zahnarztpraxispalattyai@hin.ch',
+              },
+            },
+            {
               name: 'googleMapsUrl',
               label: 'Google-Maps-URL',
               type: 'text',
@@ -245,7 +268,7 @@ export const Locations: CollectionConfig = {
               label: 'Telefonische Erreichbarkeit',
               interfaceName: 'TelephoneAvailability',
               description:
-                'Nur ausfüllen, wenn die telefonische Erreichbarkeit von den Öffnungszeiten abweicht.',
+                'Optional, falls die telefonische Erreichbarkeit von den Praxis-Öffnungszeiten abweicht.',
             }),
             {
               name: 'emergencyInfo',
@@ -256,6 +279,44 @@ export const Locations: CollectionConfig = {
                 description:
                   'Hinweis für Notfälle ausserhalb der Öffnungszeiten (z. B. Notfalldienst-Nummer).',
               },
+            },
+            {
+              name: 'emergencyServices',
+              label: 'Regionale Notfalldienste (Telefonnummern)',
+              type: 'array',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'region',
+                  label: 'Region / Kanton',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'phone',
+                  label: 'Notfallnummer',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'emergencyLeaflet',
+              label: 'Merkblatt zum Zahnunfall (PDF)',
+              type: 'upload',
+              relationTo: 'media',
+              filterOptions: {
+                mimeType: { equals: 'application/pdf' },
+              },
+              admin: {
+                description: 'PDF-Download für Verhalten bei Zahnunfällen (z. B. SSO-Plakat).',
+              },
+            },
+            {
+              name: 'emergencyLeafletLabel',
+              label: 'Merkblatt Link-Beschriftung',
+              type: 'text',
+              defaultValue: 'Merkblatt zum Zahnunfall (PDF)',
             },
           ],
         },

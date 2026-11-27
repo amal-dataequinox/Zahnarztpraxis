@@ -58,6 +58,7 @@ export function CMSLink({
   return (
     <Link
       href={resolved.href}
+      prefetch={resolved.href.startsWith('/') ? true : undefined}
       className={cn(
         'font-sans font-medium text-[var(--color-accent)] underline-offset-[0.18em] transition-colors hover:underline',
         className,

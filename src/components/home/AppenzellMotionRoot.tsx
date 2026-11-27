@@ -9,13 +9,23 @@ import { MotionProvider } from '@/components/motion/MotionProvider'
 /**
  * Client shell for Appenzell homepage motion: provider, scroll bridge, control.
  */
-export function AppenzellMotionRoot({ children }: { children: ReactNode }) {
+export function AppenzellMotionRoot({
+  children,
+  motionEnabled = true,
+}: {
+  children: ReactNode
+  motionEnabled?: boolean
+}) {
   return (
     <MotionProvider>
-      <div className="appenzell-home">
+      <div className={motionEnabled ? 'appenzell-home' : 'appenzell-home is-paused'}>
         {children}
-        <AlpineScrollBridge nextId="praxis" />
-        <MotionControl />
+        {motionEnabled ? (
+          <>
+            <AlpineScrollBridge nextId="praxis" />
+            <MotionControl />
+          </>
+        ) : null}
       </div>
     </MotionProvider>
   )

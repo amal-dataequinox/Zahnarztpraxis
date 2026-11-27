@@ -1,6 +1,8 @@
 import * as migration_20261118_101545_initial from './20261118_101545_initial';
 import * as migration_20261120_065014_location_hero_video from './20261120_065014_location_hero_video';
 import * as migration_20261120_070940_location_logo from './20261120_070940_location_logo';
+import * as migration_20261127_060136___name from './20261127_060136___name';
+import * as migration_20261127_063000_s3_media_prefix from './20261127_063000_s3_media_prefix';
 
 export const migrations = [
   {
@@ -16,6 +18,16 @@ export const migrations = [
   {
     up: migration_20261120_070940_location_logo.up,
     down: migration_20261120_070940_location_logo.down,
-    name: '20261120_070940_location_logo'
+    name: '20261120_070940_location_logo',
+  },
+  {
+    up: migration_20261127_060136___name.up,
+    down: migration_20261127_060136___name.down,
+    name: '20261127_060136___name'
+  },
+  {
+    up: migration_20261127_063000_s3_media_prefix.up,
+    down: migration_20261127_063000_s3_media_prefix.down,
+    name: '20261127_063000_s3_media_prefix',
   },
 ];

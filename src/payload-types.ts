@@ -34,7 +34,7 @@ export type OpeningHours =
     }[]
   | null;
 /**
- * Nur ausfüllen, wenn die telefonische Erreichbarkeit von den Öffnungszeiten abweicht.
+ * Optional, falls die telefonische Erreichbarkeit von den Praxis-Öffnungszeiten abweicht.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TelephoneAvailability".
@@ -154,14 +154,18 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | 'de' | 'de'[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('de' | 'en') | ('de' | 'en')[];
   globals: {
     'site-settings': SiteSetting;
+    'design-system': DesignSystem;
+    'home-page': HomePage;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'design-system': DesignSystemSelect<false> | DesignSystemSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
   };
-  locale: 'de';
+  locale: 'de' | 'en';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -240,9 +244,13 @@ export interface Location {
    * Inaktive Standorte werden auf der Website nicht ausgeliefert.
    */
   active?: boolean | null;
+  /**
+   * Individuelle Primärfarbe für diese Praxis (z. B. #00a887, #3a81c4 oder jede Wunschfarbe). Überschreibt die globale Primärfarbe aus dem Design-System.
+   */
+  primaryColor?: string | null;
   shortDescription?: string | null;
   /**
-   * Horizontales Logo für Header (z. B. Palatty Appenzell / Gais). Leer = Standarddatei aus dem Design-System.
+   * Horizontales Logo für Header. Leer = Standardlogo aus dem Design-System oder Website-Einstellungen.
    */
   logo?: (number | null) | Media;
   mainImage?: (number | null) | Media;
@@ -269,6 +277,10 @@ export interface Location {
   };
   phone?: string | null;
   email?: string | null;
+  /**
+   * Sichere HIN-Adresse, z. B. zahnarztpraxispalattyai@hin.ch
+   */
+  hinEmail?: string | null;
   googleMapsUrl?: string | null;
   latitude?: number | null;
   longitude?: number | null;
@@ -279,6 +291,18 @@ export interface Location {
    * Hinweis für Notfälle ausserhalb der Öffnungszeiten (z. B. Notfalldienst-Nummer).
    */
   emergencyInfo?: string | null;
+  emergencyServices?:
+    | {
+        region: string;
+        phone: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * PDF-Download für Verhalten bei Zahnunfällen (z. B. SSO-Plakat).
+   */
+  emergencyLeaflet?: (number | null) | Media;
+  emergencyLeafletLabel?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -291,7 +315,7 @@ export interface Location {
   createdAt: string;
 }
 /**
- * Freigegebene Praxisbilder und kurze Website-Videos (MP4/WebM). Keine generierten Personen- oder Praxisfotos.
+ * Praxisbilder, Videos (MP4/WebM) sowie adaptive HLS-Streams (.m3u8) inkl. Vorschaubild.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -299,10 +323,20 @@ export interface Location {
 export interface Media {
   id: number;
   /**
-   * Beschreibt den Bildinhalt für Screenreader und Suchmaschinen.
+   * Beschreibt den Inhalt für Screenreader und Suchmaschinen.
    */
   alt: string;
+  /**
+   * Wird beim Hochladen automatisch erkannt — für HLS auf «HLS Stream» stellen.
+   */
+  mediaType?: ('image' | 'video' | 'hls' | 'document') | null;
+  /**
+   * Wird beim ZIP-Upload automatisch ausgefüllt oder kann direkt als .m3u8 URL eingegeben werden.
+   */
+  hlsUrl?: string | null;
   description?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -352,9 +386,6 @@ export interface Page {
    * URL-Bezeichner. Wird automatisch aus "title" erzeugt, wenn leer.
    */
   slug: string;
-  /**
-   * Leer lassen für Seiten, die auf beiden Domains verfügbar sind.
-   */
   location?: (number | null) | Location;
   pageType: 'home' | 'standard' | 'contact' | 'legal';
   featuredImage?: (number | null) | Media;
@@ -388,10 +419,13 @@ export interface Page {
  * via the `definition` "HeroBlock".
  */
 export interface HeroBlock {
+  eyebrow?: string | null;
   heading: string;
+  titleHighlight?: string | null;
   subheading?: string | null;
   image?: (number | null) | Media;
-  cta: HeroCta;
+  hideDefaultActions?: boolean | null;
+  cta?: HeroCta;
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
@@ -401,11 +435,11 @@ export interface HeroBlock {
  * via the `definition` "HeroCta".
  */
 export interface HeroCta {
-  label: string;
+  label?: string | null;
   type?: ('internal' | 'external') | null;
   page?: (number | null) | Page;
   /**
-   * Externe https-URL oder interner Pfad (z. B. /leistungen).
+   * Externe URL, E-Mail/Telefon-Link (mailto:/tel:) oder interner Pfad (z. B. /leistungen).
    */
   url?: string | null;
   newTab?: boolean | null;
@@ -415,6 +449,8 @@ export interface HeroCta {
  * via the `definition` "RichTextBlock".
  */
 export interface RichTextBlock {
+  eyebrow?: string | null;
+  appearance?: ('editorial-card' | 'bento-sections' | 'urgent-split' | 'plain') | null;
   content: {
     root: {
       type: string;
@@ -430,6 +466,8 @@ export interface RichTextBlock {
     };
     [k: string]: unknown;
   };
+  sidebarTitle?: string | null;
+  sidebarText?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'richText';
@@ -482,12 +520,35 @@ export interface ImageGalleryBlock {
  * via the `definition` "ServicesOverviewBlock".
  */
 export interface ServicesOverviewBlock {
+  eyebrow?: string | null;
   heading?: string | null;
+  headingHighlight?: string | null;
   intro?: string | null;
+  cardLinkLabel?: string | null;
   /**
    * Leer lassen, um automatisch alle veröffentlichten Leistungen des Standorts anzuzeigen.
    */
   services?: (number | Service)[] | null;
+  journeyEyebrow?: string | null;
+  journeyHeading?: string | null;
+  journeyHighlight?: string | null;
+  journeyDescription?: string | null;
+  journeySteps?:
+    | {
+        step: string;
+        icon?: ('chat' | 'compass' | 'shield') | null;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaEyebrow?: string | null;
+  ctaHeading?: string | null;
+  ctaHighlight?: string | null;
+  ctaDescription?: string | null;
+  ctaButtonLabel?: string | null;
+  ctaButtonHref?: string | null;
+  ctaImage?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'servicesOverview';
@@ -524,6 +585,10 @@ export interface Service {
   } | null;
   featuredImage?: (number | null) | Media;
   /**
+   * Steuert die Filterung auf der Leistungsseite.
+   */
+  category?: ('vorsorge' | 'zahnerhalt' | 'aesthetik' | 'notfall') | null;
+  /**
    * Technischer Bezeichner für das Icon (wird im Design-System in Phase 2 definiert).
    */
   icon?: string | null;
@@ -550,8 +615,11 @@ export interface Service {
  * via the `definition` "TeamOverviewBlock".
  */
 export interface TeamOverviewBlock {
+  eyebrow?: string | null;
   heading?: string | null;
   intro?: string | null;
+  defaultRoleLabel?: string | null;
+  showBiographies?: boolean | null;
   /**
    * Leer lassen, um automatisch alle aktiven Teammitglieder des Standorts anzuzeigen.
    */
@@ -665,9 +733,11 @@ export interface ContactBlock {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  eyebrow?: string | null;
   heading: string;
   text?: string | null;
-  cta: CallToActionCta;
+  image?: (number | null) | Media;
+  cta?: CallToActionCta;
   id?: string | null;
   blockName?: string | null;
   blockType: 'callToAction';
@@ -677,11 +747,11 @@ export interface CallToActionBlock {
  * via the `definition` "CallToActionCta".
  */
 export interface CallToActionCta {
-  label: string;
+  label?: string | null;
   type?: ('internal' | 'external') | null;
   page?: (number | null) | Page;
   /**
-   * Externe https-URL oder interner Pfad (z. B. /leistungen).
+   * Externe URL, E-Mail/Telefon-Link (mailto:/tel:) oder interner Pfad (z. B. /leistungen).
    */
   url?: string | null;
   newTab?: boolean | null;
@@ -726,9 +796,6 @@ export interface Navigation {
    * Technische Position der Navigation im Layout.
    */
   identifier: 'main' | 'footer';
-  /**
-   * Leer lassen für eine Navigation, die beide Domains teilen.
-   */
   location?: (number | null) | Location;
   /**
    * Die Reihenfolge der Einträge bestimmt die Anzeige-Reihenfolge.
@@ -751,7 +818,7 @@ export interface NavigationItemLink {
   type?: ('internal' | 'external') | null;
   page?: (number | null) | Page;
   /**
-   * Externe https-URL oder interner Pfad (z. B. /leistungen).
+   * Externe URL, E-Mail/Telefon-Link (mailto:/tel:) oder interner Pfad (z. B. /leistungen).
    */
   url?: string | null;
   newTab?: boolean | null;
@@ -911,6 +978,7 @@ export interface LocationsSelect<T extends boolean = true> {
   slug?: T;
   domain?: T;
   active?: T;
+  primaryColor?: T;
   shortDescription?: T;
   logo?: T;
   mainImage?: T;
@@ -933,6 +1001,7 @@ export interface LocationsSelect<T extends boolean = true> {
       };
   phone?: T;
   email?: T;
+  hinEmail?: T;
   googleMapsUrl?: T;
   latitude?: T;
   longitude?: T;
@@ -940,6 +1009,15 @@ export interface LocationsSelect<T extends boolean = true> {
   openingHours?: T | OpeningHoursSelect<T>;
   telephoneAvailability?: T | TelephoneAvailabilitySelect<T>;
   emergencyInfo?: T;
+  emergencyServices?:
+    | T
+    | {
+        region?: T;
+        phone?: T;
+        id?: T;
+      };
+  emergencyLeaflet?: T;
+  emergencyLeafletLabel?: T;
   meta?:
     | T
     | {
@@ -1023,9 +1101,12 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "HeroBlock_select".
  */
 export interface HeroBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
+  titleHighlight?: T;
   subheading?: T;
   image?: T;
+  hideDefaultActions?: T;
   cta?: T | HeroCtaSelect<T>;
   id?: T;
   blockName?: T;
@@ -1046,7 +1127,11 @@ export interface HeroCtaSelect<T extends boolean = true> {
  * via the `definition` "RichTextBlock_select".
  */
 export interface RichTextBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  appearance?: T;
   content?: T;
+  sidebarTitle?: T;
+  sidebarText?: T;
   id?: T;
   blockName?: T;
 }
@@ -1082,9 +1167,32 @@ export interface ImageGalleryBlockSelect<T extends boolean = true> {
  * via the `definition` "ServicesOverviewBlock_select".
  */
 export interface ServicesOverviewBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
+  headingHighlight?: T;
   intro?: T;
+  cardLinkLabel?: T;
   services?: T;
+  journeyEyebrow?: T;
+  journeyHeading?: T;
+  journeyHighlight?: T;
+  journeyDescription?: T;
+  journeySteps?:
+    | T
+    | {
+        step?: T;
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  ctaEyebrow?: T;
+  ctaHeading?: T;
+  ctaHighlight?: T;
+  ctaDescription?: T;
+  ctaButtonLabel?: T;
+  ctaButtonHref?: T;
+  ctaImage?: T;
   id?: T;
   blockName?: T;
 }
@@ -1093,8 +1201,11 @@ export interface ServicesOverviewBlockSelect<T extends boolean = true> {
  * via the `definition` "TeamOverviewBlock_select".
  */
 export interface TeamOverviewBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   intro?: T;
+  defaultRoleLabel?: T;
+  showBiographies?: T;
   teamMembers?: T;
   id?: T;
   blockName?: T;
@@ -1130,8 +1241,10 @@ export interface ContactBlockSelect<T extends boolean = true> {
  * via the `definition` "CallToActionBlock_select".
  */
 export interface CallToActionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   text?: T;
+  image?: T;
   cta?: T | CallToActionCtaSelect<T>;
   id?: T;
   blockName?: T;
@@ -1157,6 +1270,7 @@ export interface ServicesSelect<T extends boolean = true> {
   shortDescription?: T;
   detailedDescription?: T;
   featuredImage?: T;
+  category?: T;
   icon?: T;
   relatedServices?: T;
   locations?: T;
@@ -1206,7 +1320,11 @@ export interface TeamMembersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  mediaType?: T;
+  hlsUrl?: T;
   description?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1359,7 +1477,7 @@ export interface SiteSetting {
   id: number;
   brandName: string;
   /**
-   * Übergreifende Kontaktdaten der Marke. Standortspezifische Daten werden am Standort gepflegt.
+   * Zentrale Kontaktdaten der Praxis (Fallback, falls unter Praxis & Standort nicht abweichend gepflegt).
    */
   brandContact?: {
     phone?: string | null;
@@ -1397,7 +1515,7 @@ export interface SiteSetting {
     image?: (number | null) | Media;
   };
   /**
-   * Hinweisbanner auf beiden Websites, z. B. Ferienabwesenheit.
+   * Hinweisbanner oben auf der Website, z. B. für Ferienabwesenheit oder Praxisinfos.
    */
   announcement?: {
     enabled?: boolean | null;
@@ -1406,7 +1524,213 @@ export interface SiteSetting {
   sharedMedia?: {
     logo?: (number | null) | Media;
     fallbackOgImage?: (number | null) | Media;
+    defaultHeroImage?: (number | null) | Media;
+    defaultCtaImage?: (number | null) | Media;
   };
+  bookingCtaLabel?: string | null;
+  contactFormButtonLabel?: string | null;
+  serviceSidebarEyebrow?: string | null;
+  relatedServicesHeading?: string | null;
+  serviceSidebarDescription?: string | null;
+  serviceFallbackDetail?: string | null;
+  footerHoursLabel?: string | null;
+  footerNavLabel?: string | null;
+  footerLegalLabel?: string | null;
+  footerNotfallLabel?: string | null;
+  footerJobsLabel?: string | null;
+  footerImpressumLabel?: string | null;
+  footerDatenschutzLabel?: string | null;
+  contactSectionEyebrow?: string | null;
+  contactNameLabel?: string | null;
+  contactEmailLabel?: string | null;
+  contactMessageLabel?: string | null;
+  contactFormNote?: string | null;
+  servicesFilterAllLabel?: string | null;
+  servicesFilterVorsorgeLabel?: string | null;
+  servicesFilterZahnerhaltLabel?: string | null;
+  servicesFilterAesthetikLabel?: string | null;
+  servicesFilterNotfallLabel?: string | null;
+  serviceBreadcrumbLabel?: string | null;
+  serviceDetailEyebrow?: string | null;
+  serviceRelatedEyebrow?: string | null;
+  serviceViewAllLabel?: string | null;
+  serviceCardDetailsLabel?: string | null;
+  locationEyebrowLabel?: string | null;
+  locationMapActionLabel?: string | null;
+  emergencySectionLabel?: string | null;
+  teamPortraitPlaceholderLabel?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "design-system".
+ */
+export interface DesignSystem {
+  id: number;
+  /**
+   * Geben Sie einen beliebigen 6-stelligen Hex-Farbcode ein (z. B. #00a887, #3a81c4, #1D70B8, #E11D48). Steuert alle Primär-Akzente auf der gesamten Website.
+   */
+  accent: string;
+  /**
+   * Wählen Sie eine Vorlage oder passen Sie die Farben darunter direkt frei an.
+   */
+  themePreset: 'appenzell' | 'dental-blue' | 'medical-blue' | 'alpine-emerald' | 'custom';
+  accentText: string;
+  ink: string;
+  paper: string;
+  surface: string;
+  headingFont?: ('ibm-plex' | 'general' | 'switzer' | 'system') | null;
+  bodyFont?: ('ibm-plex' | 'switzer' | 'general' | 'system') | null;
+  cardRadius?: number | null;
+  sectionSpacing?: number | null;
+  contentWidth?: number | null;
+  /**
+   * Länge der schwebenden Navigationsleiste (Standard: 1440px).
+   */
+  headerWidth?: number | null;
+  motionEnabled?: boolean | null;
+  siteName?: string | null;
+  siteUrl?: string | null;
+  organizationName?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  heroBadge?: string | null;
+  heroHeadlineTop?: string | null;
+  heroHeadlinePrefix?: string | null;
+  /**
+   * Wird in der Primärfarbe dargestellt. Zeilenumbruch erzeugt zwei Zeilen.
+   */
+  heroHeadlineHighlight?: string | null;
+  heroSubheadline?: string | null;
+  heroPrimaryCtaLabel?: string | null;
+  heroPrimaryCtaHref?: string | null;
+  heroSecondaryCtaLabel?: string | null;
+  heroSecondaryCtaHref?: string | null;
+  heroScrollLabel?: string | null;
+  /**
+   * Wählen Sie Medium (inkl. adaptives HLS-Streaming wie bei DEQX), eine Volltonfarbe oder einen CSS-Verlauf.
+   */
+  heroBackgroundType?: ('media' | 'color' | 'gradient') | null;
+  /**
+   * Gültige CSS-Farbe (z. B. #0c1824 oder rgba(0,0,0,0.8)).
+   */
+  heroBackgroundColor?: string | null;
+  /**
+   * z. B. linear-gradient(135deg, #0c1824 0%, #00a887 100%)
+   */
+  heroBackgroundGradient?: string | null;
+  /**
+   * Wählen Sie ein HLS-Medium (.m3u8 aus Medien), ein Video (MP4/WebM) oder ein Foto.
+   */
+  heroMedia?: (number | null) | Media;
+  /**
+   * Optional: Direkte .m3u8 Stream-URL (überschreibt falls ausgefüllt). Für adaptive Wiedergabe über hls.js.
+   */
+  heroHlsUrl?: string | null;
+  heroVideo?: (number | null) | Media;
+  /**
+   * Optionales Vorschaubild vor dem ersten Frame und bei reduzierter Bewegung.
+   */
+  heroVideoPoster?: (number | null) | Media;
+  heroVideoAutoplay?: boolean | null;
+  heroVideoLoop?: boolean | null;
+  heroVideoMuted?: boolean | null;
+  aboutEyebrow?: string | null;
+  aboutHeading?: string | null;
+  aboutLead?: string | null;
+  aboutBody?: string | null;
+  aboutExtendedParagraphs?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  aboutLinkLabel?: string | null;
+  aboutLinkHref?: string | null;
+  aboutImage?: (number | null) | Media;
+  aboutDetailImage?: (number | null) | Media;
+  aboutBadgeLabel?: string | null;
+  aboutHighlights?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  careHeadlineTop?: string | null;
+  careHeadlineHighlight?: string | null;
+  careSubtitle?: string | null;
+  /**
+   * Die drei interaktiven Karten unter dem Praxis-Abschnitt.
+   */
+  careCards?:
+    | {
+        eyebrow: string;
+        icon?: ('shield' | 'tooth' | 'sparkles') | null;
+        surfaceStyle?: ('tinted-soft' | 'white' | 'tinted-cool') | null;
+        title: string;
+        description: string;
+        linkLabel: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  galleryEyebrow?: string | null;
+  galleryHeading?: string | null;
+  galleryHighlight?: string | null;
+  galleryDescription?: string | null;
+  galleryItems?:
+    | {
+        image: number | Media;
+        category: string;
+        caption: string;
+        layoutSpan?: ('standard' | 'wide') | null;
+        id?: string | null;
+      }[]
+    | null;
+  servicesEyebrow?: string | null;
+  servicesHeading?: string | null;
+  servicesHeadingHighlight?: string | null;
+  servicesDescription?: string | null;
+  servicesLinkLabel?: string | null;
+  teamEyebrow?: string | null;
+  teamHeading?: string | null;
+  teamDescription?: string | null;
+  teamLinkLabel?: string | null;
+  teamDefaultRoleLabel?: string | null;
+  locationEyebrow?: string | null;
+  locationHeading?: string | null;
+  locationHeadingHighlight?: string | null;
+  locationDescription?: string | null;
+  hoursDisclaimer?: string | null;
+  appointmentEyebrow?: string | null;
+  appointmentHeading?: string | null;
+  appointmentDescription?: string | null;
+  appointmentLinkLabel?: string | null;
+  appointmentImage?: (number | null) | Media;
+  locationAddressLabel?: string | null;
+  locationMapLabel?: string | null;
+  pricingEyebrow?: string | null;
+  pricingHeading?: string | null;
+  pricingHighlight?: string | null;
+  pricingCardEyebrow?: string | null;
+  pricingChipOne?: string | null;
+  pricingChipTwo?: string | null;
+  pricingTaxPointLabel?: string | null;
+  pricingTaxPointValue?: string | null;
+  pricingSubcaption?: string | null;
+  pricingDescription?: string | null;
+  pricingEstimateEyebrow?: string | null;
+  pricingEstimateHeading?: string | null;
+  pricingNote?: string | null;
+  pricingServicesCtaLabel?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1449,7 +1773,180 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         logo?: T;
         fallbackOgImage?: T;
+        defaultHeroImage?: T;
+        defaultCtaImage?: T;
       };
+  bookingCtaLabel?: T;
+  contactFormButtonLabel?: T;
+  serviceSidebarEyebrow?: T;
+  relatedServicesHeading?: T;
+  serviceSidebarDescription?: T;
+  serviceFallbackDetail?: T;
+  footerHoursLabel?: T;
+  footerNavLabel?: T;
+  footerLegalLabel?: T;
+  footerNotfallLabel?: T;
+  footerJobsLabel?: T;
+  footerImpressumLabel?: T;
+  footerDatenschutzLabel?: T;
+  contactSectionEyebrow?: T;
+  contactNameLabel?: T;
+  contactEmailLabel?: T;
+  contactMessageLabel?: T;
+  contactFormNote?: T;
+  servicesFilterAllLabel?: T;
+  servicesFilterVorsorgeLabel?: T;
+  servicesFilterZahnerhaltLabel?: T;
+  servicesFilterAesthetikLabel?: T;
+  servicesFilterNotfallLabel?: T;
+  serviceBreadcrumbLabel?: T;
+  serviceDetailEyebrow?: T;
+  serviceRelatedEyebrow?: T;
+  serviceViewAllLabel?: T;
+  serviceCardDetailsLabel?: T;
+  locationEyebrowLabel?: T;
+  locationMapActionLabel?: T;
+  emergencySectionLabel?: T;
+  teamPortraitPlaceholderLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "design-system_select".
+ */
+export interface DesignSystemSelect<T extends boolean = true> {
+  accent?: T;
+  themePreset?: T;
+  accentText?: T;
+  ink?: T;
+  paper?: T;
+  surface?: T;
+  headingFont?: T;
+  bodyFont?: T;
+  cardRadius?: T;
+  sectionSpacing?: T;
+  contentWidth?: T;
+  headerWidth?: T;
+  motionEnabled?: T;
+  siteName?: T;
+  siteUrl?: T;
+  organizationName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  heroBadge?: T;
+  heroHeadlineTop?: T;
+  heroHeadlinePrefix?: T;
+  heroHeadlineHighlight?: T;
+  heroSubheadline?: T;
+  heroPrimaryCtaLabel?: T;
+  heroPrimaryCtaHref?: T;
+  heroSecondaryCtaLabel?: T;
+  heroSecondaryCtaHref?: T;
+  heroScrollLabel?: T;
+  heroBackgroundType?: T;
+  heroBackgroundColor?: T;
+  heroBackgroundGradient?: T;
+  heroMedia?: T;
+  heroHlsUrl?: T;
+  heroVideo?: T;
+  heroVideoPoster?: T;
+  heroVideoAutoplay?: T;
+  heroVideoLoop?: T;
+  heroVideoMuted?: T;
+  aboutEyebrow?: T;
+  aboutHeading?: T;
+  aboutLead?: T;
+  aboutBody?: T;
+  aboutExtendedParagraphs?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  aboutLinkLabel?: T;
+  aboutLinkHref?: T;
+  aboutImage?: T;
+  aboutDetailImage?: T;
+  aboutBadgeLabel?: T;
+  aboutHighlights?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  careHeadlineTop?: T;
+  careHeadlineHighlight?: T;
+  careSubtitle?: T;
+  careCards?:
+    | T
+    | {
+        eyebrow?: T;
+        icon?: T;
+        surfaceStyle?: T;
+        title?: T;
+        description?: T;
+        linkLabel?: T;
+        href?: T;
+        id?: T;
+      };
+  galleryEyebrow?: T;
+  galleryHeading?: T;
+  galleryHighlight?: T;
+  galleryDescription?: T;
+  galleryItems?:
+    | T
+    | {
+        image?: T;
+        category?: T;
+        caption?: T;
+        layoutSpan?: T;
+        id?: T;
+      };
+  servicesEyebrow?: T;
+  servicesHeading?: T;
+  servicesHeadingHighlight?: T;
+  servicesDescription?: T;
+  servicesLinkLabel?: T;
+  teamEyebrow?: T;
+  teamHeading?: T;
+  teamDescription?: T;
+  teamLinkLabel?: T;
+  teamDefaultRoleLabel?: T;
+  locationEyebrow?: T;
+  locationHeading?: T;
+  locationHeadingHighlight?: T;
+  locationDescription?: T;
+  hoursDisclaimer?: T;
+  appointmentEyebrow?: T;
+  appointmentHeading?: T;
+  appointmentDescription?: T;
+  appointmentLinkLabel?: T;
+  appointmentImage?: T;
+  locationAddressLabel?: T;
+  locationMapLabel?: T;
+  pricingEyebrow?: T;
+  pricingHeading?: T;
+  pricingHighlight?: T;
+  pricingCardEyebrow?: T;
+  pricingChipOne?: T;
+  pricingChipTwo?: T;
+  pricingTaxPointLabel?: T;
+  pricingTaxPointValue?: T;
+  pricingSubcaption?: T;
+  pricingDescription?: T;
+  pricingEstimateEyebrow?: T;
+  pricingEstimateHeading?: T;
+  pricingNote?: T;
+  pricingServicesCtaLabel?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

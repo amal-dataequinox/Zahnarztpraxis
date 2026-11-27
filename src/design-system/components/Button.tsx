@@ -7,7 +7,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variantClass: Record<ButtonVariant, string> = {
   primary:
-    'bg-[var(--palatty-cyan-deep)] text-[var(--palatty-snow)] hover:bg-[var(--palatty-cyan)] active:bg-[var(--palatty-cyan-deep)]',
+    'bg-[var(--palatty-cyan-deep)] text-[var(--color-accent-text,var(--palatty-snow))] hover:bg-[var(--palatty-cyan)] active:bg-[var(--palatty-cyan-deep)]',
   secondary:
     'bg-transparent text-[var(--palatty-ink)] ring-1 ring-inset ring-[var(--palatty-ink)] hover:bg-[color-mix(in_oklab,var(--palatty-ink)_4%,transparent)]',
   ghost:

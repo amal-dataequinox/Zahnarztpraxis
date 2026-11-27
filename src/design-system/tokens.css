@@ -20,9 +20,9 @@
   --palatty-cyan-deep: #147a86;
   --palatty-cyan-bright: #3c849c; /* rules / non-text only */
 
-  /* Location pips — subtle, not competing brands */
-  --accent-appenzell: #a67c52;
-  --accent-gais: #6b7c8a;
+  /* Location pips / branch primary themes */
+  --accent-appenzell: #00a887;
+  --accent-gais: #3a81c4;
 
   /* Neutrals / lines */
   --palatty-line: color-mix(in oklab, var(--palatty-ink) 16%, transparent);
@@ -66,6 +66,7 @@
   --color-accent: var(--palatty-cyan);
   --color-accent-hover: var(--palatty-cyan-deep);
   --color-accent-soft: color-mix(in oklab, var(--palatty-cyan) 10%, var(--palatty-paper));
+  --color-accent-text: #ffffff;
   --color-accent-secondary: var(--palatty-navy);
 
   --color-interactive: var(--palatty-cyan);

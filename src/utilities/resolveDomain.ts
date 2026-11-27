@@ -91,8 +91,8 @@ export const resolveDomain = (rawHost: string | null | undefined): string | null
 
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     const fallback = process.env.DEFAULT_LOCATION_SLUG?.trim().toLowerCase()
-    return fallback && fallback.length > 0 ? fallback : null
+    return fallback && fallback.length > 0 ? fallback : 'appenzell'
   }
 
-  return null
+  return 'appenzell'
 }

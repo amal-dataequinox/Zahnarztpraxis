@@ -11,6 +11,12 @@ export const TeamOverview: Block = {
   labels: { singular: 'Teamübersicht', plural: 'Teamübersichten' },
   fields: [
     {
+      name: 'eyebrow',
+      label: 'Oberzeile / Etikett',
+      type: 'text',
+      localized: true,
+    },
+    {
       name: 'heading',
       label: 'Überschrift',
       type: 'text',
@@ -21,6 +27,18 @@ export const TeamOverview: Block = {
       label: 'Einleitung',
       type: 'textarea',
       localized: true,
+    },
+    {
+      name: 'defaultRoleLabel',
+      label: 'Standard-Bezeichnung (falls Funktion leer)',
+      type: 'text',
+      localized: true,
+    },
+    {
+      name: 'showBiographies',
+      label: 'Biografien unter den Teamkarten anzeigen',
+      type: 'checkbox',
+      defaultValue: true,
     },
     {
       name: 'teamMembers',

@@ -20,6 +20,7 @@ export function ButtonLink({
   size = 'md',
   className,
   newTab,
+  prefetch,
   ...rest
 }: ButtonLinkProps) {
   const external = href.startsWith('http') || newTab
@@ -38,7 +39,12 @@ export function ButtonLink({
   }
 
   return (
-    <Link href={href} className={buttonClassName({ variant, size, className })} {...rest}>
+    <Link
+      href={href}
+      prefetch={prefetch ?? (href.startsWith('/') ? true : undefined)}
+      className={buttonClassName({ variant, size, className })}
+      {...rest}
+    >
       {children}
     </Link>
   )

@@ -6,13 +6,15 @@ export const isMedia = (value: unknown): value is Media =>
 export const isVideoMedia = (media: Media | number | null | undefined): media is Media =>
   isMedia(media) && Boolean(media.mimeType?.startsWith('video/'))
 
-/** Payload may store absolute localhost URLs; next/image needs relative /api paths. */
+/** Payload may store absolute URLs (localhost or NEXT_PUBLIC_SERVER_URL); next/image needs relative local paths. */
 export const toSiteImageSrc = (url: string | null | undefined): string | null => {
   if (!url) return null
   try {
     if (url.startsWith('/')) return url
     const parsed = new URL(url)
     if (
+      parsed.pathname.startsWith('/api/media/') ||
+      parsed.pathname.startsWith('/design-system/') ||
       parsed.hostname === 'localhost' ||
       parsed.hostname === '127.0.0.1' ||
       parsed.hostname.endsWith('.localhost')
@@ -51,9 +53,10 @@ export const resolveHeroVideo = (
   location: Location,
   fallback: { src: string; poster: string; alt: string; mimeType?: string },
 ): HeroVideoSource => {
-  const video = isVideoMedia(location.heroVideo) ? location.heroVideo : null
+  const loc = location as any;
+  const video = isVideoMedia(loc.heroVideo) ? loc.heroVideo : null
   const src = toSiteImageSrc(video?.url) || fallback.src
-  const posterMedia = isMedia(location.heroVideoPoster) ? location.heroVideoPoster : null
+  const posterMedia = isMedia(loc.heroVideoPoster) ? loc.heroVideoPoster : null
   const poster =
     toSiteImageSrc(posterMedia?.sizes?.hero?.url || posterMedia?.url) || fallback.poster
   const alt = getMediaAlt(video, fallback.alt)

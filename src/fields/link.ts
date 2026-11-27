@@ -6,6 +6,7 @@ type LinkFieldOptions = {
   /** Include a visible label field for the link. Defaults to true. */
   withLabel?: boolean
   interfaceName?: string
+  required?: boolean
 }
 
 /**
@@ -18,6 +19,7 @@ export const linkField = ({
   label = 'Link',
   withLabel = true,
   interfaceName,
+  required = true,
 }: LinkFieldOptions = {}): GroupField => ({
   name,
   label,
@@ -30,7 +32,7 @@ export const linkField = ({
             name: 'label',
             label: 'Beschriftung',
             type: 'text' as const,
-            required: true,
+            required,
           },
         ]
       : []),
@@ -62,15 +64,15 @@ export const linkField = ({
         const data = siblingData as { type?: string } | undefined
         if (data?.type !== 'external') return true
         if (!value) return 'URL ist erforderlich.'
-        if (!/^(https?:\/\/|\/)/.test(value)) {
-          return 'URL muss mit http(s):// beginnen oder ein Pfad wie /kontakt sein.'
+        if (!/^(https?:\/\/|\/|mailto:|tel:|#)/.test(value)) {
+          return 'URL muss mit http(s)://, mailto:, tel:, # oder / beginnen.'
         }
         return true
       },
       admin: {
         condition: (_data, siblingData) => siblingData?.type === 'external',
-        placeholder: 'https://… oder /kontakt',
-        description: 'Externe https-URL oder interner Pfad (z. B. /leistungen).',
+        placeholder: 'https://…, mailto:… oder /kontakt',
+        description: 'Externe URL, E-Mail/Telefon-Link (mailto:/tel:) oder interner Pfad (z. B. /leistungen).',
       },
     },
     {

@@ -12,6 +12,12 @@ export const CallToAction: Block = {
   labels: { singular: 'Call-to-Action', plural: 'Call-to-Actions' },
   fields: [
     {
+      name: 'eyebrow',
+      label: 'Oberzeile / Etikett',
+      type: 'text',
+      localized: true,
+    },
+    {
       name: 'heading',
       label: 'Überschrift',
       type: 'text',
@@ -24,6 +30,12 @@ export const CallToAction: Block = {
       type: 'textarea',
       localized: true,
     },
-    linkField({ name: 'cta', label: 'Button', interfaceName: 'CallToActionCta' }),
+    {
+      name: 'image',
+      label: 'Begleitbild',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    linkField({ name: 'cta', label: 'Button', interfaceName: 'CallToActionCta', required: false }),
   ],
 }

@@ -1,28 +1,25 @@
 import { AppointmentCTA } from '@/design-system'
+import type { Location } from '@/payload-types'
 
 type BookingPlaceholderProps = {
   className?: string
   label?: string
-  /** Hide the placeholder disclaimer (e.g. hero — keep one cyan CTA clean). */
   compact?: boolean
+  location?: Location
 }
 
-/**
- * Identifiable booking CTA that does not claim online booking works.
- * Wire real Denteo / scheduler URLs only after practice confirmation.
- */
 export function BookingPlaceholder({
   className,
   label = 'Termin anfragen',
   compact = false,
+  location,
 }: BookingPlaceholderProps) {
+  const href = location?.bookingUrl || '/kontakt#termin'
   return (
     <AppointmentCTA
-      href="/kontakt#termin"
+      href={href}
       label={label}
-      supporting={
-        compact ? undefined : 'Platzhalter — Online-Buchung folgt nach Freigabe.'
-      }
+      supporting={compact ? undefined : undefined}
       className={className}
     />
   )

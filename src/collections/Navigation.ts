@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone, editorOrAbove } from '@/access'
 import { linkField } from '@/fields/link'
+import { cmsCollectionRevalidateHooks } from '@/utilities/cacheRevalidation'
 
 /**
  * Navigation menus. A navigation either belongs to one location (e.g. the
@@ -13,7 +14,7 @@ export const Navigation: CollectionConfig = {
   labels: { singular: 'Navigation', plural: 'Navigationen' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'identifier', 'location'],
+    defaultColumns: ['name', 'identifier'],
     group: 'Verwaltung',
   },
   access: {
@@ -22,6 +23,7 @@ export const Navigation: CollectionConfig = {
     update: editorOrAbove,
     delete: editorOrAbove,
   },
+  hooks: cmsCollectionRevalidateHooks(['cms-navigation']),
   fields: [
     {
       name: 'name',
@@ -52,7 +54,7 @@ export const Navigation: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Leer lassen für eine Navigation, die beide Domains teilen.',
+        hidden: true,
       },
     },
     {

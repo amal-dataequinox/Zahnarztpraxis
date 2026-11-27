@@ -13,6 +13,9 @@ import {
   TeamOverview,
 } from '@/blocks'
 import { slugField } from '@/fields/slug'
+import { cmsCollectionRevalidateHooks } from '@/utilities/cacheRevalidation'
+
+const PAGE_REVALIDATE_HOOKS = cmsCollectionRevalidateHooks(['cms-pages'])
 
 /**
  * The slug is not globally unique: both locations may have e.g. a "team" page.
@@ -64,7 +67,7 @@ export const Pages: CollectionConfig = {
   labels: { singular: 'Seite', plural: 'Seiten' },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'location', 'pageType', '_status'],
+    defaultColumns: ['title', 'slug', 'pageType', '_status'],
     group: 'Inhalte',
   },
   versions: {
@@ -82,6 +85,7 @@ export const Pages: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [validateUniqueSlugPerLocation],
+    ...PAGE_REVALIDATE_HOOKS,
   },
   fields: [
     {
@@ -100,7 +104,7 @@ export const Pages: CollectionConfig = {
       index: true,
       admin: {
         position: 'sidebar',
-        description: 'Leer lassen für Seiten, die auf beiden Domains verfügbar sind.',
+        hidden: true,
       },
     },
     {

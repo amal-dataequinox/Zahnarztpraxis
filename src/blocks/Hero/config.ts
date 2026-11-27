@@ -11,10 +11,22 @@ export const Hero: Block = {
   labels: { singular: 'Hero', plural: 'Heroes' },
   fields: [
     {
+      name: 'eyebrow',
+      label: 'Oberzeile / Etikett',
+      type: 'text',
+      localized: true,
+    },
+    {
       name: 'heading',
       label: 'Überschrift',
       type: 'text',
       required: true,
+      localized: true,
+    },
+    {
+      name: 'titleHighlight',
+      label: 'Hervorgehobene Zeile (Primärfarbe, Optional)',
+      type: 'text',
       localized: true,
     },
     {
@@ -29,6 +41,12 @@ export const Hero: Block = {
       type: 'upload',
       relationTo: 'media',
     },
-    linkField({ name: 'cta', label: 'Call-to-Action', interfaceName: 'HeroCta' }),
+    {
+      name: 'hideDefaultActions',
+      label: 'Standard-Termin- & Telefonbuttons ausblenden (z. B. für Rechtliches)',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    linkField({ name: 'cta', label: 'Call-to-Action', interfaceName: 'HeroCta', required: false }),
   ],
 }

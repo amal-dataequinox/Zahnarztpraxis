@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { approvedOrEditor, editorOrAbove } from '@/access'
+import { cmsCollectionRevalidateHooks } from '@/utilities/cacheRevalidation'
 
 /**
  * Patient testimonials. Only genuine, verifiable feedback is entered by
@@ -11,7 +12,7 @@ export const Testimonials: CollectionConfig = {
   labels: { singular: 'Bewertung', plural: 'Bewertungen' },
   admin: {
     useAsTitle: 'displayName',
-    defaultColumns: ['displayName', 'location', 'source', 'approved'],
+    defaultColumns: ['displayName', 'source', 'approved'],
     group: 'Inhalte',
     description: 'Nur echte, überprüfbare Patientenstimmen erfassen.',
   },
@@ -21,6 +22,7 @@ export const Testimonials: CollectionConfig = {
     update: editorOrAbove,
     delete: editorOrAbove,
   },
+  hooks: cmsCollectionRevalidateHooks(['cms']),
   fields: [
     {
       name: 'displayName',
@@ -41,7 +43,7 @@ export const Testimonials: CollectionConfig = {
       type: 'relationship',
       relationTo: 'locations',
       index: true,
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', hidden: true },
     },
     {
       name: 'source',

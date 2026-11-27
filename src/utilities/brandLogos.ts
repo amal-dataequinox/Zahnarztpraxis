@@ -1,21 +1,18 @@
-import type { Location } from '@/payload-types'
+import type { Location, SiteSetting } from '@/payload-types'
 import { getMediaAlt, isMedia, toSiteImageSrc } from '@/utilities/media'
 
 const B = '/design-system/brand' as const
 
+export const UNIFIED_LOGO = {
+  src: `${B}/logo-palatty.png`,
+  width: 596,
+  height: 126,
+  alt: 'Zahnarztpraxis Palatty — Dein Lächeln. Unsere Leidenschaft.',
+} as const
+
 export const PRACTICE_LOGOS = {
-  appenzell: {
-    src: `${B}/logo-appenzell-header.png`,
-    width: 852,
-    height: 126,
-    alt: 'Zahnarztpraxis Palatty Appenzell AG — Dein Lächeln. Unsere Leidenschaft.',
-  },
-  gais: {
-    src: `${B}/logo-gais-on-media.png`,
-    width: 744,
-    height: 126,
-    alt: 'Zahnarztpraxis Palatty Gais AG — Dein Lächeln. Unsere Leidenschaft.',
-  },
+  appenzell: UNIFIED_LOGO,
+  gais: UNIFIED_LOGO,
 } as const
 
 export type BrandLogo = {
@@ -25,21 +22,28 @@ export type BrandLogo = {
   alt: string
 }
 
-export function resolveBrandLogo(location: Location): BrandLogo {
-  const slug = location.slug === 'gais' ? 'gais' : 'appenzell'
-  const fallback = PRACTICE_LOGOS[slug]
+export function resolveBrandLogo(location: Location, settings?: SiteSetting | null): BrandLogo {
+  const fallback = UNIFIED_LOGO
+  const mediaCandidate = isMedia(location.logo)
+    ? location.logo
+    : isMedia(settings?.sharedMedia?.logo)
+      ? settings.sharedMedia.logo
+      : null
 
-  if (isMedia(location.logo)) {
-    const src = toSiteImageSrc(location.logo.sizes?.card?.url || location.logo.url)
+  if (mediaCandidate) {
+    const src = toSiteImageSrc(mediaCandidate.sizes?.card?.url || mediaCandidate.url)
     if (src) {
       return {
         src,
-        width: location.logo.width || fallback.width,
-        height: location.logo.height || fallback.height,
-        alt: getMediaAlt(location.logo, fallback.alt),
+        width: mediaCandidate.width || fallback.width,
+        height: mediaCandidate.height || fallback.height,
+        alt: getMediaAlt(mediaCandidate, settings?.brandName || fallback.alt),
       }
     }
   }
 
-  return fallback
+  return {
+    ...fallback,
+    alt: settings?.brandName || fallback.alt,
+  }
 }

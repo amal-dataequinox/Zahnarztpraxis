@@ -59,28 +59,29 @@ export function SiteHeader({
       className={cn(
         'z-50 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
         overlayHome
-          ? cn('fixed inset-x-0 px-3 sm:px-6', scrolled ? 'top-2 sm:top-3' : 'top-3 sm:top-5')
-          : cn('sticky inset-x-0 px-3 sm:px-6 mb-6', scrolled ? 'top-2 sm:top-3' : 'top-3 sm:top-5'),
+          ? cn('fixed inset-x-0 px-4 sm:px-8 lg:px-10', scrolled ? 'top-2 sm:top-3' : 'top-3 sm:top-5')
+          : cn('sticky inset-x-0 px-4 sm:px-8 lg:px-10 pb-2', scrolled ? 'top-2 sm:top-3' : 'top-3 sm:top-5'),
       )}
     >
       <div
-        className={cn(
-          'mx-auto w-full pointer-events-auto transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-          scrolled ? 'max-w-5xl' : 'max-w-6xl',
-        )}
+        className="mx-auto w-full pointer-events-auto transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{
+          maxWidth: 'var(--header-max-width, 1440px)',
+        }}
       >
         <div
           className={cn(
             'relative flex items-center justify-between rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
             scrolled
-              ? 'h-12 sm:h-[54px] px-3.5 sm:px-5 border border-black/[0.1] bg-white/96 backdrop-blur-xl shadow-[0_12px_36px_rgb(0,0,0,0.12),0_2px_6px_rgb(0,0,0,0.06)]'
-              : 'h-14 sm:h-[68px] px-4 sm:px-6 border border-black/[0.08] bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08),0_1px_3px_rgb(0,0,0,0.04)]',
+              ? 'h-12 sm:h-[56px] px-5 sm:px-8 lg:px-10 border border-black/[0.1] bg-white/96 backdrop-blur-xl shadow-[0_12px_36px_rgb(0,0,0,0.12),0_2px_6px_rgb(0,0,0,0.06)]'
+              : 'h-14 sm:h-[68px] px-5 sm:px-8 lg:px-10 border border-black/[0.08] bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.08),0_1px_3px_rgb(0,0,0,0.04)]',
           )}
         >
           {/* 1. Left: Brand Logo & Title */}
           <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/"
+              prefetch={true}
               className="flex items-center gap-3 no-underline group"
               onClick={() => setOpen(false)}
             >
@@ -110,7 +111,7 @@ export function SiteHeader({
 
           {/* 2. Center: Navigation Items (Desktop) */}
           <nav aria-label="Hauptnavigation" className="hidden lg:flex items-center justify-center">
-            <ul className="m-0 flex list-none items-center gap-1 p-0 transition-all duration-300">
+            <ul className="m-0 flex list-none items-center gap-2 lg:gap-4 xl:gap-6 p-0 transition-all duration-300">
               {items.map((item) => {
                 const active =
                   item.href === '/'
@@ -120,12 +121,14 @@ export function SiteHeader({
                   <li key={`${item.href}-${item.label}`}>
                     <Link
                       href={item.href}
+                      prefetch={item.href.startsWith('/') ? true : undefined}
+                      aria-current={active ? 'page' : undefined}
                       className={cn(
                         'inline-flex items-center rounded-full font-sans font-medium transition-all duration-300 no-underline',
-                        scrolled ? 'px-3 py-1 text-xs sm:text-[13px]' : 'px-3.5 py-1.5 text-sm',
+                        scrolled ? 'px-3.5 py-1 text-xs sm:text-[13px]' : 'px-4 py-1.5 text-sm',
                         active
-                          ? 'bg-black/[0.06] text-[#112926] font-semibold'
-                          : 'text-[#4A5568] hover:text-[#112926] hover:bg-black/[0.03]',
+                          ? 'bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-semibold'
+                          : 'text-[#4A5568] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/5',
                       )}
                     >
                       {item.label}
@@ -136,21 +139,17 @@ export function SiteHeader({
             </ul>
           </nav>
 
-          {/* 3. Right: Action Icons & Location Switcher */}
+          {/* 3. Right: Action Icons & Language Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 transition-all duration-300">
-            {/* Location Switcher (Desktop) */}
-            <div className="hidden xl:flex items-center border-r border-gray-200 pr-2.5 mr-0.5">
-              <LocationSwitcher current={current} options={locationOptions} />
-            </div>
-
             {/* 4 Circular Action Buttons (Matching Reference Design) */}
             <div className="flex items-center gap-1 sm:gap-1.5">
               {/* 1. Search / Treatments */}
               <Link
                 href="/leistungen"
+                prefetch={true}
                 title="Behandlungen & Leistungen"
                 className={cn(
-                  'flex items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:text-[#008768] hover:border-[#008768]/40 hover:bg-[#008768]/5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                  'flex items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                   scrolled ? 'h-8 w-8 sm:h-8.5 sm:w-8.5' : 'h-9 w-9 sm:h-10 sm:w-10',
                 )}
               >
@@ -173,6 +172,7 @@ export function SiteHeader({
               {/* 2. Emergency / Heart */}
               <Link
                 href="/notfall"
+                prefetch={true}
                 title="Zahnärztlicher Notfall"
                 className={cn(
                   'flex items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
@@ -200,7 +200,7 @@ export function SiteHeader({
                   href={`tel:${location.phone}`}
                   title={`Praxis anrufen: ${location.phone}`}
                   className={cn(
-                    'flex items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:text-[#008768] hover:border-[#008768]/40 hover:bg-[#008768]/5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
+                    'flex items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                     scrolled ? 'h-8 w-8 sm:h-8.5 sm:w-8.5' : 'h-9 w-9 sm:h-10 sm:w-10',
                   )}
                 >
@@ -223,9 +223,10 @@ export function SiteHeader({
               {/* 4. Appointment / Booking */}
               <Link
                 href="/kontakt#termin"
+                prefetch={true}
                 title="Termin vereinbaren"
                 className={cn(
-                  'flex items-center justify-center rounded-full border border-[#008768]/40 bg-[#008768]/10 text-[#008768] hover:bg-[#008768] hover:text-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-xs',
+                  'flex items-center justify-center rounded-full border border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-xs',
                   scrolled ? 'h-8 w-8 sm:h-8.5 sm:w-8.5' : 'h-9 w-9 sm:h-10 sm:w-10',
                 )}
               >
@@ -288,6 +289,7 @@ export function SiteHeader({
                   <li key={`mobile-${item.href}-${item.label}`}>
                     <Link
                       href={item.href}
+                      prefetch={item.href.startsWith('/') ? true : undefined}
                       onClick={() => setOpen(false)}
                       className="flex min-h-11 items-center px-3 rounded-lg font-sans text-base font-medium text-[#112926] hover:bg-black/[0.03] no-underline"
                     >
@@ -298,11 +300,10 @@ export function SiteHeader({
               </ul>
             </nav>
             <div className="mt-4 border-t border-gray-100 pt-4 flex flex-col gap-3">
-              <LocationSwitcher current={current} options={locationOptions} />
               <ButtonLink
                 href="/kontakt#termin"
                 size="md"
-                className="w-full justify-center rounded-xl bg-[#008768] text-white hover:bg-[#007358]"
+                className="w-full justify-center rounded-xl text-white hover:opacity-90 transition-all" style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-accent-text, #ffffff)' }}
                 onClick={() => setOpen(false)}
               >
                 Termin vereinbaren ↗

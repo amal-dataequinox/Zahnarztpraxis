@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { activeOrEditor, editorOrAbove } from '@/access'
+import { cmsCollectionRevalidateHooks } from '@/utilities/cacheRevalidation'
 
 /**
  * Practice staff profiles. All content — names, biographies and photographs —
@@ -11,7 +12,7 @@ export const TeamMembers: CollectionConfig = {
   labels: { singular: 'Teammitglied', plural: 'Teammitglieder' },
   admin: {
     useAsTitle: 'fullName',
-    defaultColumns: ['fullName', 'position', 'locations', 'displayOrder', 'active'],
+    defaultColumns: ['fullName', 'position', 'displayOrder', 'active'],
     group: 'Inhalte',
   },
   access: {
@@ -20,6 +21,7 @@ export const TeamMembers: CollectionConfig = {
     update: editorOrAbove,
     delete: editorOrAbove,
   },
+  hooks: cmsCollectionRevalidateHooks(['cms-team']),
   fields: [
     {
       name: 'fullName',
@@ -90,7 +92,7 @@ export const TeamMembers: CollectionConfig = {
       relationTo: 'locations',
       hasMany: true,
       index: true,
-      admin: { position: 'sidebar' },
+      admin: { position: 'sidebar', hidden: true },
     },
     {
       name: 'displayOrder',

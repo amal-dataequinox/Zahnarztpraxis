@@ -54,13 +54,13 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
             copy={
               <Stack gap="6" className="max-w-xl motion-fade-up">
                 <p className="m-0 flex items-center gap-2.5 font-sans text-[length:var(--text-xs)] font-bold uppercase tracking-[0.16em] text-[#132624]">
-                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#008768]" aria-hidden />
-                  Zahnarztpraxis Palatty · Gais
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#3a81c4]" aria-hidden />
+                  Zahnarztpraxis Palatty
                 </p>
                 <h1 className="font-sans text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em] text-[#112926] text-balance drop-shadow-[0_1px_1px_rgba(255,255,255,0.7)]">
                   Zahnmedizin,<br />
-                  die sich <span className="text-[#008768]">gut</span><br />
-                  <span className="text-[#008768]">anfühlt.</span>
+                  die sich <span className="text-[#3a81c4]">gut</span><br />
+                  <span className="text-[#3a81c4]">anfühlt.</span>
                 </h1>
                 <p className="font-sans text-[length:var(--text-base)] sm:text-lg font-medium leading-relaxed text-[#142824] text-pretty">
                   Moderne Behandlung. Persönliche Betreuung.<br />
@@ -70,7 +70,7 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
                   <ButtonLink
                     href="/kontakt#termin"
                     size="lg"
-                    className="rounded-xl bg-[#008768] text-white hover:bg-[#007358] px-7 py-4 font-sans font-semibold text-base shadow-[0_4px_16px_rgba(0,135,104,0.25)] hover:shadow-[0_6px_22px_rgba(0,135,104,0.35)] hover:-translate-y-0.5 transition-all duration-200"
+                    className="rounded-xl bg-[#3a81c4] text-white hover:bg-[#2c6ba8] px-7 py-4 font-sans font-semibold text-base shadow-[0_4px_16px_rgba(58,129,196,0.3)] hover:shadow-[0_6px_22px_rgba(58,129,196,0.4)] hover:-translate-y-0.5 transition-all duration-200"
                   >
                     Termin vereinbaren
                     <span aria-hidden className="text-[1.15em] leading-none ml-1">
@@ -79,7 +79,8 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
                   </ButtonLink>
                   <Link
                     href="/leistungen"
-                    className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#008768] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
+                    prefetch={true}
+                    className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#3a81c4] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
                   >
                     Behandlungen entdecken
                     <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">
@@ -218,6 +219,7 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
               </div>
               <Link
                 href="/kontakt"
+                prefetch={true}
                 className="font-sans text-[length:var(--text-sm)] font-medium text-[var(--palatty-cyan-deep)] no-underline hover:underline"
               >
                 Zur Kontaktseite →

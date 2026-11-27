@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import type { Location, Media, Page } from '@/payload-types'
+import { toSiteImageSrc } from './media'
 
 const WEEKDAY_TO_SCHEMA: Record<string, string> = {
   monday: 'Monday',
@@ -21,7 +22,8 @@ export const getLocationBaseUrl = (location: Location): string => `https://${loc
 
 const mediaUrl = (media: Media | number | null | undefined, baseUrl: string): string | undefined => {
   if (!media || typeof media === 'number' || !media.url) return undefined
-  return media.url.startsWith('http') ? media.url : `${baseUrl}${media.url}`
+  const normalized = toSiteImageSrc(media.url) || media.url
+  return normalized.startsWith('http') ? normalized : `${baseUrl}${normalized}`
 }
 
 type PageMetaArgs = {

@@ -45,7 +45,7 @@ export function RenderBlocks({ blocks, location }: RenderBlocksProps) {
           case 'contact':
             return <ContactBlockView key={key} block={block} location={location} />
           case 'callToAction':
-            return <CallToActionBlockView key={key} block={block} />
+            return <CallToActionBlockView key={key} block={block} location={location} />
           default:
             return null
         }
