@@ -7,6 +7,7 @@ import { ContactBlockView } from './ContactBlockView'
 import { HeroBlockView } from './HeroBlockView'
 import { ImageGalleryBlockView } from './ImageGalleryBlockView'
 import { ImageTextBlockView } from './ImageTextBlockView'
+import { JobsOverviewBlockView } from './JobsOverviewBlockView'
 import { LocationInformationBlockView } from './LocationInformationBlockView'
 import { RichTextBlockView } from './RichTextBlockView'
 import { ServicesOverviewBlockView } from './ServicesOverviewBlockView'
@@ -34,6 +35,8 @@ export function RenderBlocks({ blocks, location }: RenderBlocksProps) {
             return <RichTextBlockView key={key} block={block} />
           case 'imageText':
             return <ImageTextBlockView key={key} block={block} />
+          case 'jobsOverview':
+            return <JobsOverviewBlockView key={key} block={block} />
           case 'imageGallery':
             return <ImageGalleryBlockView key={key} block={block} />
           case 'servicesOverview':

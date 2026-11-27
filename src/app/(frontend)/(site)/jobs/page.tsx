@@ -4,9 +4,16 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
+import { ApplicationGuide } from '@/components/jobs/ApplicationGuide'
+import { JobsBoardClient, type JobBoardItem } from '@/components/jobs/JobsBoardClient'
 import { PageHeroBand } from '@/components/site/PageHeroBand'
 import { Container, Stack } from '@/design-system'
-import { getPageBySlug, getSiteSettings } from '@/utilities/cmsQueries'
+import {
+  getActiveJobs,
+  getJobBoardConfig,
+  getPageBySlug,
+  getSiteSettings,
+} from '@/utilities/cmsQueries'
 import { isMedia, toSiteImageSrc } from '@/utilities/media'
 import { resolveCurrentLocation } from '@/utilities/resolveLocation'
 import { generatePageMetadata } from '@/utilities/seo'
@@ -22,8 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
     location,
     page,
     path: '/jobs',
-    fallbackTitle: `Jobs | ${location.name}`,
-    fallbackDescription: `Stellenangebote der ${location.name}.`,
+    fallbackTitle: `Jobs & Karriere | ${location.name}`,
+    fallbackDescription: `Offene Stellenangebote und direkte Online-Bewerbung bei ${location.name}.`,
   })
 }
 
@@ -50,9 +57,11 @@ export default async function JobsPage() {
   if (!location) notFound()
 
   const { isEnabled: draft } = await draftMode()
-  const [page, settings] = await Promise.all([
+  const [page, settings, jobs, boardConfig] = await Promise.all([
     getPageBySlug('jobs', location.id, draft),
     getSiteSettings().catch(() => null),
+    getActiveJobs().catch(() => []),
+    getJobBoardConfig().catch(() => null),
   ])
 
   if (page?.layout && page.layout.length > 0) {
@@ -69,18 +78,44 @@ export default async function JobsPage() {
       ? settings!.sharedMedia!.defaultHeroImage
       : null
 
+  const jobItems: JobBoardItem[] = jobs.map((job) => ({
+    id: job.id,
+    title: job.title,
+    slug: job.slug,
+    jobId: job.jobId,
+    department: job.department,
+    location: job.location,
+    workload: job.workload,
+    employmentType: job.employmentType,
+    summary: job.summary,
+    startDate: job.startDate,
+  }))
+
   return (
     <main id="main">
       <PageHeroBand
-        eyebrow={location.address.city || 'Appenzell'}
+        eyebrow={boardConfig?.eyebrow || location.address.city || 'Appenzell'}
         title={page?.title || 'Jobs &'}
         titleHighlight="Karriere."
-        lead={`Verstärken Sie unser engagiertes Praxisteam im Herzen von ${location.address.city}.`}
+        lead={
+          boardConfig?.description ||
+          `Verstärken Sie unser engagiertes Praxisteam im Herzen von ${location.address.city}.`
+        }
         mediaSrc={heroMediaDoc ? toSiteImageSrc(heroMediaDoc.sizes?.hero?.url || heroMediaDoc.url) : null}
         mediaAlt={heroMediaDoc?.alt || 'Teamarbeit am Empfang der Zahnarztpraxis Palatty Appenzell'}
       />
 
-      <section className="py-[var(--section-y)] bg-white">
+      <JobsBoardClient
+        initialJobs={jobItems}
+        eyebrow={boardConfig?.eyebrow || 'Offene Stellen'}
+        heading={boardConfig?.title || 'Aktuelle'}
+        headingHighlight="Stellenangebote."
+        intro={boardConfig?.description}
+      />
+
+      <ApplicationGuide data={boardConfig?.applicationGuide} />
+
+      <section className="py-[var(--section-y)] bg-white border-t border-black/[0.06]">
         <Container>
           <div className="service-bento-grid mb-12">
             {BENEFITS.map((item) => (

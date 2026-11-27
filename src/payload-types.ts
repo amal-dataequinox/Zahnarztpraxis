@@ -126,7 +126,10 @@ export interface Config {
     pages: Page;
     services: Service;
     'team-members': TeamMember;
+    jobs: Job;
+    'job-applications': JobApplication;
     media: Media;
+    resumes: Resume;
     testimonials: Testimonial;
     navigation: Navigation;
     redirects: Redirect;
@@ -142,7 +145,10 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
+    'job-applications': JobApplicationsSelect<false> | JobApplicationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    resumes: ResumesSelect<false> | ResumesSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -159,11 +165,13 @@ export interface Config {
     'site-settings': SiteSetting;
     'design-system': DesignSystem;
     'home-page': HomePage;
+    'job-board-config': JobBoardConfig;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'design-system': DesignSystemSelect<false> | DesignSystemSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'job-board-config': JobBoardConfigSelect<false> | JobBoardConfigSelect<true>;
   };
   locale: 'de' | 'en';
   widgets: {
@@ -394,6 +402,7 @@ export interface Page {
         | HeroBlock
         | RichTextBlock
         | ImageTextBlock
+        | JobsOverviewBlock
         | ImageGalleryBlock
         | ServicesOverviewBlock
         | TeamOverviewBlock
@@ -497,6 +506,23 @@ export interface ImageTextBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobsOverviewBlock".
+ */
+export interface JobsOverviewBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  headingHighlight?: string | null;
+  intro?: string | null;
+  showFilters?: boolean | null;
+  showApplicationGuide?: boolean | null;
+  emptyHeading?: string | null;
+  emptyDescription?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'jobsOverview';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -773,6 +799,165 @@ export interface CallToActionCta {
   newTab?: boolean | null;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: number;
+  /**
+   * z. B. "Zahnärztin / Zahnarzt (60–80 %)"
+   */
+  title: string;
+  /**
+   * URL-Bezeichner. Wird automatisch aus "title" erzeugt, wenn leer.
+   */
+  slug: string;
+  /**
+   * Eindeutige Kennung, z. B. PAL-ZA-001
+   */
+  jobId: string;
+  status: 'active' | 'closed';
+  /**
+   * z. B. "Zahnmedizin", "Dentalhygiene", "Dentalassistenz"
+   */
+  department: string;
+  /**
+   * z. B. "Gais (AR) & Appenzell (AI)"
+   */
+  location: string;
+  /**
+   * z. B. "60–80 %" oder "80–100 %"
+   */
+  workload?: string | null;
+  employmentType: 'full-time' | 'part-time' | 'contract' | 'internship';
+  /**
+   * z. B. "Per sofort oder nach Vereinbarung"
+   */
+  startDate?: string | null;
+  /**
+   * Kleinere Zahlen erscheinen zuerst.
+   */
+  displayOrder?: number | null;
+  /**
+   * Kurzer Teaser-Text für die Stellenkarte auf /jobs.
+   */
+  summary?: string | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  requirements: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  tasks?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  benefits?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Optionaler Hinweis zu Abschlüssen, Bewilligungen oder Bewerbungsablauf.
+   */
+  applicationNote?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-applications".
+ */
+export interface JobApplication {
+  id: number;
+  job: number | Job;
+  status: 'new' | 'reviewing' | 'interviewing' | 'rejected' | 'hired';
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  linkedin?: string | null;
+  hasPortfolio?: boolean | null;
+  resume: number | Resume;
+  additionalComments?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resumes".
+ */
+export interface Resume {
+  id: number;
+  alt?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * Nur echte, überprüfbare Patientenstimmen erfassen.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -902,8 +1087,20 @@ export interface PayloadLockedDocument {
         value: number | TeamMember;
       } | null)
     | ({
+        relationTo: 'jobs';
+        value: number | Job;
+      } | null)
+    | ({
+        relationTo: 'job-applications';
+        value: number | JobApplication;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'resumes';
+        value: number | Resume;
       } | null)
     | ({
         relationTo: 'testimonials';
@@ -1094,6 +1291,7 @@ export interface PagesSelect<T extends boolean = true> {
         hero?: T | HeroBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
         imageText?: T | ImageTextBlockSelect<T>;
+        jobsOverview?: T | JobsOverviewBlockSelect<T>;
         imageGallery?: T | ImageGalleryBlockSelect<T>;
         servicesOverview?: T | ServicesOverviewBlockSelect<T>;
         teamOverview?: T | TeamOverviewBlockSelect<T>;
@@ -1159,6 +1357,22 @@ export interface ImageTextBlockSelect<T extends boolean = true> {
   image?: T;
   text?: T;
   imagePosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobsOverviewBlock_select".
+ */
+export interface JobsOverviewBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  headingHighlight?: T;
+  intro?: T;
+  showFilters?: T;
+  showApplicationGuide?: T;
+  emptyHeading?: T;
+  emptyDescription?: T;
   id?: T;
   blockName?: T;
 }
@@ -1345,6 +1559,55 @@ export interface TeamMembersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  jobId?: T;
+  status?: T;
+  department?: T;
+  location?: T;
+  workload?: T;
+  employmentType?: T;
+  startDate?: T;
+  displayOrder?: T;
+  summary?: T;
+  description?: T;
+  requirements?: T;
+  tasks?: T;
+  benefits?: T;
+  applicationNote?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-applications_select".
+ */
+export interface JobApplicationsSelect<T extends boolean = true> {
+  job?: T;
+  status?: T;
+  fullName?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  linkedin?: T;
+  hasPortfolio?: T;
+  resume?: T;
+  additionalComments?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1399,6 +1662,26 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resumes_select".
+ */
+export interface ResumesSelect<T extends boolean = true> {
+  alt?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1765,6 +2048,31 @@ export interface HomePage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-board-config".
+ */
+export interface JobBoardConfig {
+  id: number;
+  eyebrow?: string | null;
+  title: string;
+  description: string;
+  applicationGuide?: {
+    heading?: string | null;
+    description?: string | null;
+    steps?:
+      | {
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    formIntro?: string | null;
+    successMessage?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1976,6 +2284,33 @@ export interface HomePageSelect<T extends boolean = true> {
   pricingEstimateHeading?: T;
   pricingNote?: T;
   pricingServicesCtaLabel?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "job-board-config_select".
+ */
+export interface JobBoardConfigSelect<T extends boolean = true> {
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  applicationGuide?:
+    | T
+    | {
+        heading?: T;
+        description?: T;
+        steps?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        formIntro?: T;
+        successMessage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

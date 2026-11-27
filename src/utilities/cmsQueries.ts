@@ -6,6 +6,8 @@ import config from '@payload-config'
 
 import type {
   DesignSystem,
+  Job,
+  JobBoardConfig,
   Location,
   Navigation,
   Page,
@@ -225,6 +227,67 @@ const fetchTeamForLocationCached = unstable_cache(
 
 export const getTeamForLocation = cache(async (locationId: number): Promise<TeamMember[]> => {
   return fetchTeamForLocationCached(locationId)
+})
+
+const fetchActiveJobsCached = unstable_cache(
+  async (): Promise<Job[]> => {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'jobs',
+      depth: 1,
+      limit: 100,
+      sort: ['displayOrder', '-createdAt'],
+      where: {
+        status: { equals: 'active' },
+      },
+    })
+    return result.docs
+  },
+  ['cms-active-jobs-v1'],
+  { revalidate: 60, tags: ['cms', 'cms-jobs'] },
+)
+
+export const getActiveJobs = cache(async (): Promise<Job[]> => {
+  return fetchActiveJobsCached()
+})
+
+const fetchJobBySlugCached = unstable_cache(
+  async (slug: string, allowClosed: boolean): Promise<Job | null> => {
+    const payload = await getPayload({ config })
+    const result = await payload.find({
+      collection: 'jobs',
+      depth: 1,
+      limit: 1,
+      overrideAccess: allowClosed,
+      where: allowClosed
+        ? { slug: { equals: slug } }
+        : {
+            and: [{ slug: { equals: slug } }, { status: { equals: 'active' } }],
+          },
+    })
+    return result.docs[0] ?? null
+  },
+  ['cms-job-by-slug-v1'],
+  { revalidate: 60, tags: ['cms', 'cms-jobs'] },
+)
+
+export const getJobBySlug = cache(
+  async (slug: string, allowClosed = false): Promise<Job | null> => {
+    return fetchJobBySlugCached(slug, allowClosed)
+  },
+)
+
+const fetchJobBoardConfigCached = unstable_cache(
+  async (): Promise<JobBoardConfig | null> => {
+    const payload = await getPayload({ config })
+    return payload.findGlobal({ slug: 'job-board-config', depth: 1 }).catch(() => null)
+  },
+  ['cms-job-board-config-v1'],
+  { revalidate: 60, tags: ['cms', 'cms-jobs'] },
+)
+
+export const getJobBoardConfig = cache(async (): Promise<JobBoardConfig | null> => {
+  return fetchJobBoardConfigCached()
 })
 
 export const formatOpeningHours = (location: Location) => location.openingHours ?? []

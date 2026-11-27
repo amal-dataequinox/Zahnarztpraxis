@@ -12,6 +12,7 @@ import path from 'path'
 import { getPayload, type Payload } from 'payload'
 
 import config from '../payload.config'
+import { seedJobsPortalData } from './jobsSeedData'
 
 type RichBlock =
   | { type: 'h2' | 'h3'; text: string }
@@ -1177,84 +1178,38 @@ async function seed() {
       title: 'Offene Stellen',
       metaTitle: 'Jobs & Karriere | Zahnarztpraxis Palatty Appenzell',
       metaDescription:
-        'Offene Stelle: Zahnärztin / Zahnarzt (60–80 %) – Gais (AR) & Appenzell (AI) bei der Zahnarztpraxis Palatty.',
+        'Offene Stellenangebote und Online-Bewerbung in Appenzell (AI) & Gais (AR) bei der Zahnarztpraxis Palatty.',
       featuredImage: heroJobsId ?? img303287,
       layout: [
         {
           blockType: 'hero',
-          eyebrow: 'Offene Stellen',
-          heading: 'Zahnärztin / Zahnarzt (60–80 %)',
-          titleHighlight: 'Gais (AR) & Appenzell (AI)',
+          eyebrow: 'Karriere bei Palatty',
+          heading: 'Offene Stellen &',
+          titleHighlight: 'Karriere.',
           subheading:
             'Wir sind eine moderne Schweizer Dorfzahnarztpraxis mit Herz und einem jungen, motivierten Team.',
           image: heroJobsId ?? img303287 ?? undefined,
         },
         {
-          blockType: 'richText',
-          eyebrow: 'Stellenausschreibung',
-          appearance: 'bento-sections',
-          content: makeRichText([
-            { type: 'h2', text: 'Zahnärztin / Zahnarzt (60–80 %) – Gais (AR) & Appenzell (AI)' },
-            {
-              type: 'p',
-              text: 'Wir sind eine moderne Schweizer Dorfzahnarztpraxis mit Herz und einem jungen, motivierten Team. Mit zwei modernen Praxen – einer in Gais (Appenzell Ausserrhoden) und einer in Appenzell (Appenzell Innerrhoden) – bieten wir moderne allgemeine Zahnmedizin für Patientinnen und Patienten jeden Alters an. Die mobile Zahnmedizin ergänzt unser Angebot. Persönliche Betreuung, Vertrauen und eine hochwertige zahnmedizinische Versorgung stehen bei uns an erster Stelle.',
-            },
-            {
-              type: 'p',
-              text: 'Zur Verstärkung unseres Teams suchen wir per sofort oder nach Vereinbarung eine engagierte Zahnärztin oder einen engagierten Zahnarzt (60–80 %).',
-            },
-            { type: 'h3', text: 'Ihr Profil' },
-            {
-              type: 'ul',
-              items: [
-                'Abgeschlossenes Studium der Zahnmedizin (Schweizer Studienabschluss bevorzugt)',
-                'Alternativ ein in der Schweiz anerkannter zahnärztlicher Abschluss',
-                'Mindestens 2–3 Jahre Berufserfahrung in der allgemeinen Zahnmedizin',
-                'Erfahrung mit dem Schweizer Dentotar®-Tarif von Vorteil',
-                'Sehr gute Deutschkenntnisse in Wort und Schrift (zwingend erforderlich)',
-                'Selbstständige, verantwortungsbewusste und patientenorientierte Arbeitsweise',
-                'Freude an der Zusammenarbeit in einem jungen Team',
-              ],
-            },
-            { type: 'h3', text: 'Ihre Aufgaben' },
-            {
-              type: 'ul',
-              items: [
-                'Selbstständige Durchführung allgemeinzahnmedizinischer Behandlungen',
-                'Umfassende Beratung und Betreuung unserer Patientinnen und Patienten',
-                'Erstellung individueller Behandlungspläne',
-                'Mitarbeit in der mobilen Zahnmedizin',
-                'Zusammenarbeit mit unserem motivierten Praxisteam',
-              ],
-            },
-            { type: 'h3', text: 'Wir bieten' },
-            {
-              type: 'ul',
-              items: [
-                'Fixlohn nach den SSO-Richtlinien',
-                'Feste und planbare Arbeitszeiten',
-                'Nur zwei Samstage pro Monat',
-                'Moderne, digital ausgestattete Praxen',
-                'Ein junges, motiviertes und wertschätzendes Team',
-              ],
-            },
-            { type: 'h3', text: 'Hinweis zur Bewerbung' },
-            {
-              type: 'p',
-              text: 'Bitte beachten Sie: Wir können ausschliesslich Bewerbungen von Zahnärztinnen und Zahnärzten mit einem Schweizer Studienabschluss oder einem in der Schweiz anerkannten zahnärztlichen Abschluss berücksichtigen.',
-            },
-          ]),
+          blockType: 'jobsOverview',
+          eyebrow: 'Offene Stellen',
+          heading: 'Aktuelle',
+          headingHighlight: 'Stellenangebote.',
+          intro:
+            'Wählen Sie eine Position aus und reichen Sie Ihre Bewerbung mit Lebenslauf direkt online ein.',
+          showFilters: true,
+          showApplicationGuide: true,
         },
         {
           blockType: 'callToAction',
-          eyebrow: 'Bewerbung',
-          heading: 'Haben wir Ihr Interesse geweckt?',
-          text: 'Wenn Sie sich in einem engagierten Team einbringen möchten und die beschriebenen Anforderungen erfüllen, freuen wir uns auf Ihre Bewerbung an gisha@zahnarzt-palatty.ch.',
+          eyebrow: 'Spontanbewerbung',
+          heading: 'Keine passende Stelle dabei?',
+          text: 'Wir freuen uns jederzeit über motivierte Fachkräfte aus den Bereichen Zahnmedizin, Dentalhygiene, Prophylaxe und Dentalassistenz an gisha@zahnarzt-palatty.ch.',
           image: sectionTerminId ?? img303475 ?? undefined,
           cta: {
             label: 'Bewerbung an gisha@zahnarzt-palatty.ch',
             type: 'external',
-            url: 'mailto:gisha@zahnarzt-palatty.ch?subject=Bewerbung%20Zahn%C3%A4rztin%20%2F%20Zahnarzt',
+            url: 'mailto:gisha@zahnarzt-palatty.ch?subject=Spontanbewerbung',
             newTab: false,
           },
         },
@@ -1575,6 +1530,7 @@ async function seed() {
     }
   }
   console.log('Updated all 7 CMS Pages cleanly from legacy site.')
+  await seedJobsPortalData(payload, { updateJobsPageLayout: false })
   console.log('SEED_LEGACY_WEBSITE_CONTENT_COMPLETE')
   process.exit(0)
 }

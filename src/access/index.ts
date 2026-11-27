@@ -60,6 +60,15 @@ export const activeOrEditor: Access = ({ req: { user } }) => {
 }
 
 /**
+ * Jobs collection: CMS editors see all openings (open & closed),
+ * the public only sees active openings.
+ */
+export const activeJobOrEditor: Access = ({ req: { user } }) => {
+  if (hasRole(user, ROLES.SUPER_ADMIN, ROLES.EDITOR)) return true
+  return { status: { equals: 'active' } }
+}
+
+/**
  * Testimonials: CMS users see everything, the public only sees approved
  * entries.
  */

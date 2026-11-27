@@ -13,10 +13,13 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { anyone, editorOrAbove } from '@/access'
+import { JobApplications } from '@/collections/JobApplications'
+import { Jobs } from '@/collections/Jobs'
 import { Locations } from '@/collections/Locations'
 import { Media } from '@/collections/Media'
 import { Navigation } from '@/collections/Navigation'
 import { Pages } from '@/collections/Pages'
+import { Resumes } from '@/collections/Resumes'
 import { Services } from '@/collections/Services'
 import { TeamMembers } from '@/collections/TeamMembers'
 import { Testimonials } from '@/collections/Testimonials'
@@ -25,9 +28,10 @@ import { getPresignedUrlHandler } from '@/endpoints/getPresignedUrl'
 import { uploadHlsLocalHandler } from '@/endpoints/hlsUpload'
 import { DesignSystem } from '@/globals/DesignSystem'
 import { HomePage } from '@/globals/HomePage'
+import { JobBoardConfig } from '@/globals/JobBoardConfig'
 import { SiteSettings } from '@/globals/SiteSettings'
 import { pluginRedirectsDe } from '@/i18n/pluginRedirects.de'
-import type { Location, Page, Service } from '@/payload-types'
+import type { Job, Location, Page, Service } from '@/payload-types'
 import { getKnownDomains } from '@/utilities/resolveDomain'
 
 const filename = fileURLToPath(import.meta.url)
@@ -89,14 +93,16 @@ const allowedOrigins = [
   ),
 ].filter((origin, index, all) => all.indexOf(origin) === index)
 
-const generateTitle: GenerateTitle<Page | Service | Location> = ({ doc }) => {
+const generateTitle: GenerateTitle<Page | Service | Location | Job> = ({ doc }) => {
   const docTitle =
     doc && 'title' in doc ? doc.title : doc && 'name' in doc ? doc.name : undefined
   return docTitle ? `${docTitle} | Zahnarztpraxis Palatty` : 'Zahnarztpraxis Palatty'
 }
 
-const generateDescription: GenerateDescription<Page | Service | Location> = ({ doc }) =>
-  (doc && 'shortDescription' in doc && doc.shortDescription) || ''
+const generateDescription: GenerateDescription<Page | Service | Location | Job> = ({ doc }) =>
+  (doc && 'summary' in doc && doc.summary) ||
+  (doc && 'shortDescription' in doc && doc.shortDescription) ||
+  ''
 
 export default buildConfig({
   serverURL,
@@ -109,8 +115,20 @@ export default buildConfig({
       titleSuffix: '- Palatty CMS',
     },
   },
-  collections: [Users, Locations, Pages, Services, TeamMembers, Media, Testimonials, Navigation],
-  globals: [SiteSettings, DesignSystem, HomePage],
+  collections: [
+    Users,
+    Locations,
+    Pages,
+    Services,
+    TeamMembers,
+    Jobs,
+    JobApplications,
+    Media,
+    Resumes,
+    Testimonials,
+    Navigation,
+  ],
+  globals: [SiteSettings, DesignSystem, HomePage, JobBoardConfig],
   endpoints: [
     {
       path: '/hls-upload',
@@ -168,7 +186,7 @@ export default buildConfig({
   sharp,
   plugins: [
     seoPlugin({
-      collections: ['pages', 'services', 'locations'],
+      collections: ['pages', 'services', 'locations', 'jobs'],
       uploadsCollection: 'media',
       tabbedUI: true,
       generateTitle,
@@ -197,6 +215,9 @@ export default buildConfig({
             if (!s3CdnBaseUrl) return `/api/media/file/${file}`
             return `${s3CdnBaseUrl}/${prefix ? `${prefix}/` : ''}${file}`
           },
+        },
+        resumes: {
+          prefix: 'palatty-resumes',
         },
       },
       bucket: s3Bucket,

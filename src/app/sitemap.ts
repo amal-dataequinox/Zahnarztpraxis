@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getLocationBaseUrl(location)
   const now = new Date(location.updatedAt)
 
-  const [pages, services] = await Promise.all([
+  const [pages, services, jobs] = await Promise.all([
     payload.find({
       collection: 'pages',
       limit: 500,
@@ -48,9 +48,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       select: { slug: true, updatedAt: true },
     }),
+    payload.find({
+      collection: 'jobs',
+      limit: 100,
+      overrideAccess: false,
+      where: {
+        status: { equals: 'active' },
+      },
+      select: { slug: true, updatedAt: true },
+    }),
   ])
 
-  const fixed = ['/leistungen', '/team', '/kontakt'].map((path) => ({
+  const fixed = ['/leistungen', '/team', '/jobs', '/kontakt'].map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: now,
   }))
@@ -67,6 +76,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...services.docs.map((service) => ({
       url: `${baseUrl}/leistungen/${service.slug}`,
       lastModified: new Date(service.updatedAt),
+    })),
+    ...jobs.docs.map((job) => ({
+      url: `${baseUrl}/jobs/${job.slug}`,
+      lastModified: new Date(job.updatedAt),
     })),
   ]
 

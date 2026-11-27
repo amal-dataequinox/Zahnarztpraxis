@@ -7,6 +7,7 @@ import * as migration_20261127_070000_palatty_s3_prefix from './20261127_070000_
 import * as migration_20261127_074601_sync_s3_fields from './20261127_074601_sync_s3_fields';
 import * as migration_20261127_123640_team_partners_section from './20261127_123640_team_partners_section';
 import * as migration_20261127_125321_remove_partner_card_description from './20261127_125321_remove_partner_card_description';
+import * as migration_20261127_150437_deqx_jobs_portal from './20261127_150437_deqx_jobs_portal';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261127_125321_remove_partner_card_description.up,
     down: migration_20261127_125321_remove_partner_card_description.down,
-    name: '20261127_125321_remove_partner_card_description'
+    name: '20261127_125321_remove_partner_card_description',
+  },
+  {
+    up: migration_20261127_150437_deqx_jobs_portal.up,
+    down: migration_20261127_150437_deqx_jobs_portal.down,
+    name: '20261127_150437_deqx_jobs_portal'
   },
 ];
