@@ -80,7 +80,7 @@ export async function GaisHome({ location, locationOptions }: GaisHomeProps) {
                   <Link
                     href="/leistungen"
                     prefetch={true}
-                    className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#3a81c4] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
+                    className="group inline-flex items-center justify-center gap-2 font-sans font-semibold text-base text-[#112926] hover:text-[#3a81c4] bg-white/90 hover:bg-white px-6 py-4 rounded-xl border border-black/[0.08] backdrop-blur-xs shadow-xs transition-all duration-200 no-underline"
                   >
                     Behandlungen entdecken
                     <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">

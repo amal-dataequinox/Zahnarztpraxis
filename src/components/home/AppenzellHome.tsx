@@ -398,7 +398,7 @@ export async function AppenzellHome({ location }: AppenzellHomeProps) {
                   </ButtonLink>
                   <Link
                     href={heroSecondaryCtaHref}
-                    className="group inline-flex items-center gap-2 font-sans font-semibold text-base text-white hover:text-white bg-white/15 hover:bg-white/25 px-6 py-4 rounded-xl border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-sm transition-all duration-200 no-underline"
+                    className="group inline-flex items-center justify-center gap-2 font-sans font-semibold text-base text-white hover:text-white bg-white/15 hover:bg-white/25 px-6 py-4 rounded-xl border border-white/30 hover:border-white/50 backdrop-blur-sm shadow-sm transition-all duration-200 no-underline"
                   >
                     {heroSecondaryCtaLabel}
                     <span
