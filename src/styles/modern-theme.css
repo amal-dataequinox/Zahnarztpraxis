@@ -600,13 +600,14 @@
 
 .team-portrait-grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 @media (min-width: 640px) {
   .team-portrait-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 }
 
@@ -619,19 +620,21 @@
 
 .team-portrait-subpage-grid {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 @media (min-width: 540px) {
   .team-portrait-subpage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
 @media (min-width: 768px) {
   .team-portrait-subpage-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 }
 
@@ -645,7 +648,7 @@
 .team-card {
   display: flex;
   flex-direction: column;
-  border-radius: 18px;
+  border-radius: 14px;
   overflow: hidden;
   background: #ffffff;
   border: 1px solid rgba(14, 42, 47, 0.07);
@@ -653,6 +656,12 @@
   transition:
     transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .team-card {
+    border-radius: 18px;
+  }
 }
 
 .team-card:hover {
@@ -679,23 +688,45 @@
 }
 
 .team-card-body {
-  padding: 1.1rem 1.15rem 1.25rem;
+  padding: 0.75rem 0.8rem 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .team-card-body {
+    padding: 1.1rem 1.15rem 1.25rem;
+  }
 }
 
 .team-card-name {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.25;
   font-weight: 600;
   letter-spacing: -0.015em;
   color: #0e2a2f;
 }
 
+@media (min-width: 640px) {
+  .team-card-name {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+}
+
 .team-card-role {
   margin: 0.25rem 0 0;
   font-family: var(--font-sans);
-  font-size: 0.8125rem;
+  font-size: 0.74rem;
+  line-height: 1.35;
   color: #546b6f;
+}
+
+@media (min-width: 640px) {
+  .team-card-role {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
 }
 
 /* ---------- Consolidated Contact, Location & Appointment Hub (#kontakt / #termin) ---------- */

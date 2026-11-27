@@ -87,7 +87,7 @@ export async function TeamOverviewBlockView({ block, location }: Props) {
                             fill
                             quality={90}
                             className="team-card-img"
-                            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+                            sizes="(max-width:640px) 50vw, (max-width:1024px) 33vw, 25vw"
                           />
                         ) : (
                           <div className="team-monogram-card">
@@ -106,7 +106,7 @@ export async function TeamOverviewBlockView({ block, location }: Props) {
                         )}
                       </div>
                       <div className="team-card-body">
-                        <h3 className="team-card-name text-lg">{member.fullName}</h3>
+                        <h3 className="team-card-name sm:text-lg">{member.fullName}</h3>
                         {member.professionalTitle || member.position ? (
                           <p className="team-card-role">
                             {[member.professionalTitle, member.position].filter(Boolean).join(' · ')}

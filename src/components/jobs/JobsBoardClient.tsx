@@ -7,6 +7,7 @@ import { Reveal } from '@/components/motion/Reveal'
 import { Container } from '@/design-system'
 
 import { formatEmploymentType } from './labels'
+import { ThemeSelect } from './ThemeSelect'
 
 export type JobBoardItem = {
   id: string | number
@@ -111,7 +112,7 @@ export function JobsBoardClient({
 
         {showFilters && initialJobs.length > 0 ? (
           <div className="mb-8 grid grid-cols-1 gap-3 rounded-2xl border border-black/[0.07] bg-[#f7faf9] p-4 sm:grid-cols-2 lg:grid-cols-12">
-            <label className="flex flex-col gap-1.5 lg:col-span-6">
+            <label className="flex flex-col gap-1.5 sm:col-span-2 lg:col-span-6">
               <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#52686c]">
                 Suche
               </span>
@@ -132,46 +133,30 @@ export function JobsBoardClient({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Position, Fachbereich oder Stellen-ID suchen…"
-                  className="min-h-11 w-full rounded-xl border border-black/[0.09] bg-white pl-10 pr-3 font-sans text-sm text-[#0e2a2f] placeholder:text-[#7c9094] focus:border-[var(--color-accent)] focus:outline-none"
+                  className="min-h-11 w-full appearance-none rounded-xl border border-black/[0.09] bg-white pl-10 pr-3 font-sans text-sm text-[#0e2a2f] placeholder:text-[#7c9094] focus:border-[var(--color-accent)] focus:outline-none"
                 />
               </div>
             </label>
 
-            <label className="flex flex-col gap-1.5 lg:col-span-3">
-              <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#52686c]">
-                Fachbereich
-              </span>
-              <select
+            <div className="lg:col-span-3">
+              <ThemeSelect
+                label="Fachbereich"
                 value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className="min-h-11 w-full rounded-xl border border-black/[0.09] bg-white px-3 font-sans text-sm text-[#0e2a2f] focus:border-[var(--color-accent)] focus:outline-none"
-              >
-                <option value="">Alle Fachbereiche</option>
-                {departments.map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
-            </label>
+                placeholder="Alle Fachbereiche"
+                options={departments}
+                onChange={setDepartment}
+              />
+            </div>
 
-            <label className="flex flex-col gap-1.5 lg:col-span-3">
-              <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-[#52686c]">
-                Arbeitsort
-              </span>
-              <select
+            <div className="lg:col-span-3">
+              <ThemeSelect
+                label="Arbeitsort"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="min-h-11 w-full rounded-xl border border-black/[0.09] bg-white px-3 font-sans text-sm text-[#0e2a2f] focus:border-[var(--color-accent)] focus:outline-none"
-              >
-                <option value="">Alle Standorte</option>
-                {locations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
-            </label>
+                placeholder="Alle Standorte"
+                options={locations}
+                onChange={setLocation}
+              />
+            </div>
           </div>
         ) : null}
 
