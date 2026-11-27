@@ -125,6 +125,7 @@ export async function SiteShell({ location, children, bare = false }: SiteShellP
         navigation={mainNav}
         brandLogo={brandLogo}
         locationOptions={locationOptions}
+        ctaLabel={settings?.bookingCtaLabel || 'Termin vereinbaren'}
       />
       <div className="min-w-0 flex-1">{children}</div>
       <SiteFooter
