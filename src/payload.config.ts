@@ -153,9 +153,9 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      max: process.env.VERCEL ? 5 : 10,
+      max: process.env.VERCEL ? 2 : 10,
       connectionTimeoutMillis: 10000,
-      idleTimeoutMillis: 10000,
+      idleTimeoutMillis: 5000,
       allowExitOnIdle: true,
       connectionString: dbConfig.connectionString,
       ...(dbConfig.ssl ? { ssl: dbConfig.ssl } : {}),
