@@ -74,6 +74,9 @@ export function SiteHeader({
       ?.map((item) => resolveCMSLink(item.link))
       .filter((item): item is NonNullable<typeof item> => Boolean(item)) ?? []
 
+  const bookingHref = location.bookingUrl || '/kontakt#termin'
+  const isExternalBooking = bookingHref.startsWith('http')
+
   useLayoutEffect(() => {
     const list = navListRef.current
     if (!list || !isTransparent) {
@@ -253,61 +256,10 @@ export function SiteHeader({
             </ul>
           </div>
 
-          {/* 3. Right: Previous 4 Circular Action Buttons & Mobile Toggle */}
+          {/* 3. Right: Action Buttons & Mobile Toggle */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 transition-all duration-300">
             <div className="flex items-center gap-1 sm:gap-1.5">
-              {/* 1. Search / Treatments */}
-              <Link
-                href="/leistungen"
-                prefetch={true}
-                title="Behandlungen & Leistungen"
-                className={iconButtonClass}
-              >
-                <svg
-                  className={cn('transition-all duration-300', scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4')}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <span className="sr-only">Behandlungen suchen</span>
-              </Link>
-
-              {/* 2. Emergency / Heart */}
-              <Link
-                href="/notfall"
-                prefetch={true}
-                title="Zahnärztlicher Notfall"
-                className={cn(
-                  'flex items-center justify-center rounded-full border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
-                  scrolled ? 'h-8 w-8 sm:h-8.5 sm:w-8.5' : 'h-9 w-9 sm:h-10 sm:w-10',
-                  isTransparent
-                    ? 'border-white/25 bg-white/10 text-white hover:text-red-300 hover:border-red-300/60 hover:bg-red-500/20'
-                    : 'border-gray-200 text-gray-700 hover:text-red-600 hover:border-red-300 hover:bg-red-50',
-                )}
-              >
-                <svg
-                  className={cn('transition-all duration-300', scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4')}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
-                <span className="sr-only">Notfall</span>
-              </Link>
-
-              {/* 3. Direct Phone Call */}
+              {/* 1. Direct Phone Call */}
               {location.phone ? (
                 <a
                   href={`tel:${location.phone}`}
@@ -330,36 +282,52 @@ export function SiteHeader({
                 </a>
               ) : null}
 
-              {/* 4. Appointment / Booking */}
-              <Link
-                href="/kontakt#termin"
-                prefetch={true}
-                title={ctaLabel}
-                className={cn(
+              {/* 2. Appointment / Booking */}
+              {(() => {
+                const bookingClassName = cn(
                   'flex items-center justify-center rounded-full border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-xs',
                   scrolled ? 'h-8 w-8 sm:h-8.5 sm:w-8.5' : 'h-9 w-9 sm:h-10 sm:w-10',
                   isTransparent
                     ? 'border-[var(--color-accent)]/75 bg-[var(--color-accent)]/25 text-white hover:bg-[var(--color-accent)] hover:text-white'
                     : 'border-[var(--color-accent)]/40 bg-[var(--color-accent)]/10 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white',
-                )}
-              >
-                <svg
-                  className={cn('transition-all duration-300', scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4')}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <rect width="18" height="18" x="3" y="4" rx="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-                <span className="sr-only">{ctaLabel}</span>
-              </Link>
+                )
+                const bookingIcon = (
+                  <>
+                    <svg
+                      className={cn('transition-all duration-300', scrolled ? 'h-3.5 w-3.5' : 'h-4 w-4')}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <rect width="18" height="18" x="3" y="4" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    <span className="sr-only">{ctaLabel}</span>
+                  </>
+                )
+
+                return isExternalBooking ? (
+                  <a
+                    href={bookingHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={ctaLabel}
+                    className={bookingClassName}
+                  >
+                    {bookingIcon}
+                  </a>
+                ) : (
+                  <Link href={bookingHref} prefetch={true} title={ctaLabel} className={bookingClassName}>
+                    {bookingIcon}
+                  </Link>
+                )
+              })()}
             </div>
 
             {/* Mobile Menu Toggle Button */}
@@ -435,18 +403,34 @@ export function SiteHeader({
               </ul>
             </nav>
             <div className="mt-4 border-t border-gray-100 pt-4 flex flex-col gap-3">
-              <ButtonLink
-                href="/kontakt#termin"
-                size="md"
-                className="w-full justify-center rounded-xl text-white hover:opacity-90 transition-all"
-                style={{
-                  backgroundColor: 'var(--color-accent)',
-                  color: 'var(--color-accent-text, #ffffff)',
-                }}
-                onClick={() => setOpenPath(null)}
-              >
-                {ctaLabel} ↗
-              </ButtonLink>
+              {isExternalBooking ? (
+                <a
+                  href={bookingHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-5 font-sans text-sm font-medium tracking-[-0.01em] text-white no-underline hover:opacity-90 transition-all"
+                  style={{
+                    backgroundColor: 'var(--color-accent)',
+                    color: 'var(--color-accent-text, #ffffff)',
+                  }}
+                  onClick={() => setOpenPath(null)}
+                >
+                  {ctaLabel} ↗
+                </a>
+              ) : (
+                <ButtonLink
+                  href={bookingHref}
+                  size="md"
+                  className="w-full justify-center rounded-xl text-white hover:opacity-90 transition-all"
+                  style={{
+                    backgroundColor: 'var(--color-accent)',
+                    color: 'var(--color-accent-text, #ffffff)',
+                  }}
+                  onClick={() => setOpenPath(null)}
+                >
+                  {ctaLabel} ↗
+                </ButtonLink>
+              )}
             </div>
           </div>
         ) : null}

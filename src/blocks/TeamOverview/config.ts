@@ -51,5 +51,74 @@ export const TeamOverview: Block = {
           'Leer lassen, um automatisch alle aktiven Teammitglieder des Standorts anzuzeigen.',
       },
     },
+    {
+      name: 'showPartners',
+      label: 'Partner & Verbände unter dem Team anzeigen',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'partnersEyebrow',
+      label: 'Partner-Oberzeile / Etikett',
+      type: 'text',
+      localized: true,
+      admin: {
+        condition: (_, siblingData) => siblingData?.showPartners !== false,
+      },
+    },
+    {
+      name: 'partnersHeading',
+      label: 'Partner-Überschrift',
+      type: 'text',
+      localized: true,
+      admin: {
+        condition: (_, siblingData) => siblingData?.showPartners !== false,
+      },
+    },
+    {
+      name: 'partnersIntro',
+      label: 'Partner-Einleitung',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        condition: (_, siblingData) => siblingData?.showPartners !== false,
+      },
+    },
+    {
+      name: 'partners',
+      label: 'Partner & Verbände',
+      type: 'array',
+      admin: {
+        condition: (_, siblingData) => siblingData?.showPartners !== false,
+        description:
+          'Leer lassen, um die Standard-Partner (SAREMCO, Appenzellerland, SSO) anzuzeigen.',
+      },
+      fields: [
+        {
+          name: 'name',
+          label: 'Name',
+          type: 'text',
+          required: true,
+          localized: true,
+        },
+        {
+          name: 'categoryLabel',
+          label: 'Kategorie / Rolle',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'url',
+          label: 'Website-URL',
+          type: 'text',
+        },
+        {
+          name: 'logo',
+          label: 'Logo (Media)',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
+    },
   ],
 }

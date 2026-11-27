@@ -624,6 +624,22 @@ export interface TeamOverviewBlock {
    * Leer lassen, um automatisch alle aktiven Teammitglieder des Standorts anzuzeigen.
    */
   teamMembers?: (number | TeamMember)[] | null;
+  showPartners?: boolean | null;
+  partnersEyebrow?: string | null;
+  partnersHeading?: string | null;
+  partnersIntro?: string | null;
+  /**
+   * Leer lassen, um die Standard-Partner (SAREMCO, Appenzellerland, SSO) anzuzeigen.
+   */
+  partners?:
+    | {
+        name: string;
+        categoryLabel?: string | null;
+        url?: string | null;
+        logo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'teamOverview';
@@ -1207,6 +1223,19 @@ export interface TeamOverviewBlockSelect<T extends boolean = true> {
   defaultRoleLabel?: T;
   showBiographies?: T;
   teamMembers?: T;
+  showPartners?: T;
+  partnersEyebrow?: T;
+  partnersHeading?: T;
+  partnersIntro?: T;
+  partners?:
+    | T
+    | {
+        name?: T;
+        categoryLabel?: T;
+        url?: T;
+        logo?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

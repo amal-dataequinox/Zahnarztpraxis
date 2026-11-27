@@ -5,6 +5,8 @@ import * as migration_20261127_060136___name from './20261127_060136___name';
 import * as migration_20261127_063000_s3_media_prefix from './20261127_063000_s3_media_prefix';
 import * as migration_20261127_070000_palatty_s3_prefix from './20261127_070000_palatty_s3_prefix';
 import * as migration_20261127_074601_sync_s3_fields from './20261127_074601_sync_s3_fields';
+import * as migration_20261127_123640_team_partners_section from './20261127_123640_team_partners_section';
+import * as migration_20261127_125321_remove_partner_card_description from './20261127_125321_remove_partner_card_description';
 
 export const migrations = [
   {
@@ -40,6 +42,16 @@ export const migrations = [
   {
     up: migration_20261127_074601_sync_s3_fields.up,
     down: migration_20261127_074601_sync_s3_fields.down,
-    name: '20261127_074601_sync_s3_fields'
+    name: '20261127_074601_sync_s3_fields',
+  },
+  {
+    up: migration_20261127_123640_team_partners_section.up,
+    down: migration_20261127_123640_team_partners_section.down,
+    name: '20261127_123640_team_partners_section',
+  },
+  {
+    up: migration_20261127_125321_remove_partner_card_description.up,
+    down: migration_20261127_125321_remove_partner_card_description.down,
+    name: '20261127_125321_remove_partner_card_description'
   },
 ];

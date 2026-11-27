@@ -8,6 +8,7 @@ import { Container, Stack, Text } from '@/design-system'
 import type { Location, TeamMember, TeamOverviewBlock } from '@/payload-types'
 import { getTeamForLocation } from '@/utilities/cmsQueries'
 import { isMedia, toSiteImageSrc } from '@/utilities/media'
+import { TeamPartnersSection } from './TeamPartnersSection'
 
 type Props = {
   block: TeamOverviewBlock
@@ -43,7 +44,8 @@ export async function TeamOverviewBlockView({ block, location }: Props) {
     : []
 
   return (
-    <section id="team" className="py-[var(--section-y)] bg-white">
+    <>
+      <section id="team" className="py-[var(--section-y)] bg-white">
       <Container>
         <Reveal>
           <div className="mb-10 max-w-2xl">
@@ -177,5 +179,7 @@ export async function TeamOverviewBlockView({ block, location }: Props) {
         )}
       </Container>
     </section>
+      <TeamPartnersSection block={block} />
+    </>
   )
 }
